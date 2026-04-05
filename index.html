@@ -181,7 +181,25 @@
                     <div class="time-grid" id="timeGrid">
                         <!-- Gerado via JavaScript -->
                     </div>
-                </div>
+                    <!-- Mensagem quando não há horários -->
+                    <div class="no-slots-message" id="noSlotsMessage" style="display: none;">
+                        <div class="no-slots-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                            </svg>
+                        </div>
+                        <h4>Não há horários disponíveis</h4>
+                        <p>Para esta data, todos os horários já foram reservados.</p>
+    
+                        <button type="button" class="btn-waitlist" onclick="openWaitlistModal()">
+                            <svg viewBox="0 0 24 24" class="btn-icon-small">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0-3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71 1.28-6 3.22.03-1.11.4-2.11 1.03-3 .41-.58.87-1.12 1.38-1.62.77-.76 1.68-1.38 2.69-1.8.73-.3 1.52-.46 2.34-.46s1.61.16 2.34.46c1.01.42 1.92 1.04 2.69 1.8.51.5.97 1.04 1.38 1.62.63.89 1 1.89 1.03 3-1.29-1.94-3.5-3.22-6-3.22z"/>
+                            </svg>
+                            <span>Entrar na Lista de Espera</span>
+                        </button>
+                        <p class="waitlist-hint">Você será avisada se abrir um horário!</p>
+                    </div>
+                    </div>
                 
                 <!-- Resumo -->
                 <div class="order-summary" id="orderSummary" style="display: none;">
@@ -400,5 +418,58 @@
     </footer>
 
     <script src="script.js"></script>
+    <!-- Modal Lista de Espera -->
+<div class="modal-overlay" id="waitlistModal">
+    <div class="modal-content">
+        <button class="modal-close" onclick="closeWaitlistModal()">×</button>
+        
+        <h2 class="modal-title">🔔 Lista de Espera</h2>
+        <p class="modal-subtitle">Preencha abaixo para ser avisada se abrir um horário</p>
+        
+        <form id="waitlistForm">
+            <input type="hidden" id="waitlistService" name="service">
+            <input type="hidden" id="waitlistPrice" name="price">
+            <input type="hidden" id="waitlistPreferredDate" name="preferredDate">
+            
+            <div class="form-group">
+                <label for="waitlistName">Nome Completo *</label>
+                <input type="text" id="waitlistName" name="name" required placeholder="Digite seu nome">
+            </div>
+            
+            <div class="form-group">
+                <label for="waitlistPhone">WhatsApp *</label>
+                <input type="tel" id="waitlistPhone" name="phone" required placeholder="(00) 00000-0000">
+            </div>
+            
+            <div class="form-group">
+                <label for="waitlistPeriod">Período de Interesse *</label>
+                <select id="waitlistPeriod" name="period" required>
+                    <option value="">Selecione...</option>
+                    <option value="esta-semana">Esta semana</option>
+                    <option value="proxima-semana">Próxima semana</option>
+                    <option value="quinzena">Próximos 15 dias</option>
+                    <option value="mes">Próximo mês</option>
+                    <option value="flexivel">Qualquer data (me avise primeiro!)</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="waitlistNotes">Observações (opcional)</label>
+                <textarea id="waitlistNotes" name="notes" rows="3" placeholder="Ex: Prefiro sábados à tarde..."></textarea>
+            </div>
+            
+            <div class="waitlist-summary">
+                <h4>📋 Resumo</h4>
+                <p><strong>Serviço:</strong> <span id="wlService">-</span></p>
+                <p><strong>Valor:</strong> <span id="wlPrice">-</span></p>
+                <p><strong>Data preferida:</strong> <span id="wlDate">-</span></p>
+            </div>
+            
+            <button type="submit" class="btn-confirm btn-waitlist-confirm">
+                ✅ Quero ser avisada!
+            </button>
+        </form>
+    </div>
+</div>
 </body>
 </html>
