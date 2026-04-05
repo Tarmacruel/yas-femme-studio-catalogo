@@ -11,10 +11,11 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <div class="container">
-            <h1>Yas Femme Studio Catálogo</h1>
-            <p class="subtitle">Realçando sua beleza natural</p>
+    <header class="hero-header">
+        <div class="hero-overlay"></div>
+        <div class="container hero-content">
+            <h1 class="fade-in-up">Yas Femme Studio Catálogo</h1>
+            <p class="subtitle fade-in-up">Realçando sua beleza natural</p>
         </div>
     </header>
 
@@ -104,47 +105,51 @@
                 <input type="hidden" id="selectedService">
                 <input type="hidden" id="selectedPrice">
                 
-                <div class="form-group">
-                    <label for="clientName">Nome Completo:</label>
-                    <input type="text" id="clientName" required placeholder="Seu nome completo">
-                </div>
-                
-                <div class="form-group">
-                    <label for="clientPhone">WhatsApp:</label>
-                    <input type="tel" id="clientPhone" required placeholder="(00) 00000-0000">
-                </div>
-                
-                <div class="form-group">
-                    <label for="clientAddress">Endereço Completo:</label>
-                    <input type="text" id="clientAddress" required placeholder="Rua, número, bairro">
-                </div>
-                
-                <div class="form-group">
-                    <label for="bookingDay">Selecione o Dia:</label>
-                    <select id="bookingDay" required onchange="updateAvailableTimes()">
-                        <option value="">Selecione um dia...</option>
-                        <option value="Segunda-feira">Segunda-feira</option>
-                        <option value="Terça-feira">Terça-feira</option>
-                        <option value="Quarta-feira">Quarta-feira</option>
-                        <option value="Quinta-feira">Quinta-feira</option>
-                        <option value="Sexta-feira">Sexta-feira</option>
-                        <option value="Sábado">Sábado</option>
-                        <option value="Domingo">Domingo</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="bookingTime">Horários Disponíveis:</label>
-                    <select id="bookingTime" required disabled>
-                        <option value="">Selecione o dia primeiro...</option>
-                    </select>
+                <div class="form-grid">
+                    <div class="form-left">
+                        <div class="form-group">
+                            <label for="clientName">Nome Completo:</label>
+                            <input type="text" id="clientName" required placeholder="Seu nome completo">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="clientPhone">WhatsApp:</label>
+                            <input type="tel" id="clientPhone" required placeholder="(00) 00000-0000">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="clientAddress">Endereço Completo:</label>
+                            <input type="text" id="clientAddress" required placeholder="Rua, número, bairro">
+                        </div>
+                    </div>
+
+                    <div class="form-right">
+                        <div class="calendar-container">
+                            <div class="calendar-header">
+                                <button type="button" id="prevMonth"><i class="fas fa-chevron-left"></i></button>
+                                <h3 id="currentMonthYear">Mês Ano</h3>
+                                <button type="button" id="nextMonth"><i class="fas fa-chevron-right"></i></button>
+                            </div>
+                            <div class="calendar-weekdays">
+                                <div>Dom</div><div>Seg</div><div>Ter</div><div>Qua</div><div>Qui</div><div>Sex</div><div>Sáb</div>
+                            </div>
+                            <div id="calendarDays" class="calendar-days"></div>
+                        </div>
+                        
+                        <div class="form-group mt-20">
+                            <label for="bookingTime">Horários Disponíveis:</label>
+                            <select id="bookingTime" required disabled>
+                                <option value="">Selecione um dia primeiro...</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
 
                 <div id="bookingSummary" class="booking-summary" style="display: none;">
                     <h3>Resumo do Agendamento</h3>
                     <p><strong>Serviço:</strong> <span id="summaryService"></span></p>
                     <p><strong>Valor:</strong> R$ <span id="summaryPrice"></span></p>
-                    <p><strong>Data:</strong> <span id="summaryDay"></span></p>
+                    <p><strong>Data:</strong> <span id="summaryDate"></span></p>
                     <p><strong>Horário:</strong> <span id="summaryTime"></span></p>
                 </div>
                 
