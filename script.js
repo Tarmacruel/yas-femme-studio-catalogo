@@ -455,3 +455,61 @@ document.getElementById('bookingModal').addEventListener('click', function(e) {
         closeModal();
     }
 });
+// ==========================================
+// FUNÇÃO COPIAR CHAVE PIX
+// ==========================================
+
+function copyPixKey() {
+    const pixKeyInput = document.getElementById('pixKey');
+    const btnCopy = document.getElementById('btnCopyPix');
+    const copyText = document.getElementById('copyText');
+    
+    // Selecionar e copiar texto
+    pixKeyInput.select();
+    pixKeyInput.setSelectionRange(0, 99999); // Para mobile
+    
+    // Copiar para clipboard
+    navigator.clipboard.writeText(pixKeyInput.value).then(() => {
+        // Feedback visual
+        const originalHTML = btnCopy.innerHTML;
+        
+        btnCopy.classList.add('copied', 'success');
+        copyText.textContent = 'Copiado!';
+        
+        // Ícone de check
+        btnCopy.innerHTML = `
+            <svg viewBox="0 0 24 24" class="copy-icon">
+                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+            </svg>
+            <span>Copiado!</span>
+        `;
+        
+        // Reverter após 2 segundos
+        setTimeout(() => {
+            btnCopy.classList.remove('copied', 'success');
+            btnCopy.innerHTML = originalHTML;
+        }, 2000);
+        
+    }).catch(err => {
+        // Fallback para navegadores antigos
+        document.execCommand('copy');
+        
+        btnCopy.classList.add('copied');
+        copyText.textContent = 'Copiado!';
+        
+        setTimeout(() => {
+            btnCopy.classList.remove('copied');
+            copyText.textContent = 'Copiar';
+        }, 2000);
+    });
+}
+
+// Permitir copiar ao clicar no input também
+document.addEventListener('DOMContentLoaded', function() {
+    const pixKeyInput = document.getElementById('pixKey');
+    if (pixKeyInput) {
+        pixKeyInput.addEventListener('click', function() {
+            this.select();
+        });
+    }
+});
