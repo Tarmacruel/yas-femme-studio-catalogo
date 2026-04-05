@@ -20,6 +20,32 @@
     </header>
 
     <main class="container">
+    <!-- Indicadores de Urgência -->
+    <div class="urgency-indicators">
+        <div class="urgency-container">
+            <div class="urgency-badge" id="nextAvailableSlot">
+                <span class="urgency-icon">⏰</span>
+                <div class="urgency-content">
+                    <span class="urgency-label">Próximo horário disponível:</span>
+                    <span class="urgency-value" id="nextSlotText">Carregando...</span>
+                </div>
+            </div>
+        
+            <div class="urgency-badge" id="weeklyAvailability">
+                <span class="urgency-icon">📅</span>
+                <div class="urgency-content">
+                    <span class="urgency-label">Esta semana:</span>
+                    <span class="urgency-value" id="weeklySlotsText">Carregando...</span>
+                </div>
+            </div>
+        
+            <div class="urgency-alert" id="urgencyAlert">
+                <span class="alert-icon">⚡</span>
+                <span class="alert-text">Agende agora e garanta seu horário!</span>
+            </div>
+        </div>
+    </div>
+        <!-- Seção Catálogo -->
         <section id="catalogo">
             <h2 class="section-title">Nossos Serviços</h2>
             <div class="services-grid">
