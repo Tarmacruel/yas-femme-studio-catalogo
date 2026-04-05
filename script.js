@@ -513,3 +513,39 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+// ==========================================
+// AJUSTE DE SCROLL NO MODAL MOBILE
+// ==========================================
+
+// Prevenir scroll do body quando modal estiver aberto
+function preventBodyScroll() {
+    document.body.style.overflow = 'hidden';
+    document.body.style.position = 'fixed';
+    document.body.style.width = '100%';
+}
+
+function enableBodyScroll() {
+    document.body.style.overflow = '';
+    document.body.style.position = '';
+    document.body.style.width = '';
+}
+
+// Sobrescrever funções existentes
+const originalOpenModal = openModal;
+openModal = function(serviceName, price, maintenanceType) {
+    originalOpenModal(serviceName, price, maintenanceType);
+    preventBodyScroll();
+}
+
+const originalCloseModal = closeModal;
+closeModal = function() {
+    originalCloseModal();
+    enableBodyScroll();
+}
+
+// Fechar modal ao clicar fora
+document.getElementById('bookingModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeModal();
+    }
+});
