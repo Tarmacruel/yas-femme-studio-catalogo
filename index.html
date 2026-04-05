@@ -3,211 +3,254 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yas Femme Studio Catálogo - Realçando sua beleza natural</title>
+    <title>Yas Femme Studio Catálogo - Extensão de Cílios</title>
+    <meta name="description" content="Realçando sua beleza natural com técnicas profissionais de lash design. Agende seu horário!">
+    
+    <!-- Google Fonts Premium -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header class="hero-header">
-        <div class="hero-overlay"></div>
-        <div class="container hero-content">
-            <h1 class="fade-in-up">Yas Femme Studio Catálogo</h1>
-            <p class="subtitle fade-in-up">Realçando sua beleza natural</p>
+    <!-- Header Premium -->
+    <header>
+        <div class="header-content">
+            <h1>Yas Femme Studio Catálogo</h1>
+            <p>Realçando sua beleza natural</p>
+        </div>
+        <div class="header-decoration">
+            <svg viewBox="0 0 24 24">
+                <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+            </svg>
         </div>
     </header>
 
-    <main class="container">
-    <!-- Indicadores de Urgência -->
+    <!-- Indicadores de Urgência Premium -->
     <div class="urgency-indicators">
         <div class="urgency-container">
             <div class="urgency-badge" id="nextAvailableSlot">
                 <span class="urgency-icon">⏰</span>
                 <div class="urgency-content">
-                    <span class="urgency-label">Próximo horário disponível:</span>
+                    <span class="urgency-label">Próximo horário disponível</span>
                     <span class="urgency-value" id="nextSlotText">Carregando...</span>
                 </div>
             </div>
-        
+            
             <div class="urgency-badge" id="weeklyAvailability">
                 <span class="urgency-icon">📅</span>
                 <div class="urgency-content">
-                    <span class="urgency-label">Esta semana:</span>
+                    <span class="urgency-label">Esta semana</span>
                     <span class="urgency-value" id="weeklySlotsText">Carregando...</span>
                 </div>
             </div>
-        
+            
             <div class="urgency-alert" id="urgencyAlert">
                 <span class="alert-icon">⚡</span>
                 <span class="alert-text">Agende agora e garanta seu horário!</span>
             </div>
         </div>
     </div>
-        <!-- Seção Catálogo -->
-        <section id="catalogo">
+
+    <!-- Seção Catálogo -->
+    <section id="catalogo">
+        <div class="container">
             <h2 class="section-title">Nossos Serviços</h2>
+            
             <div class="services-grid">
                 <!-- Card 1: Lash Lifting -->
-                <div class="service-card" data-service="Lash Lifting" data-price="95">
-                    <div class="card-image">
-                        <img src="assets/lash-lifting.jpg" alt="Lash Lifting" onerror="this.src='https://via.placeholder.com/400x300?text=Lash+Lifting'">
-                    </div>
-                    <div class="card-content">
-                        <h3>Lash Lifting</h3>
-                        <p class="price">Aplicação R$ 95</p>
-                        <p class="info">Técnica sem manutenção</p>
-                        <button class="btn-agendar" onclick="openBookingModal('Lash Lifting', 95)">Agendar este serviço</button>
+                <div class="service-card">
+                    <img src="assets/lash-lifting.jpg" alt="Lash Lifting" class="service-image">
+                    <div class="service-content">
+                        <h3 class="service-name">Lash Lifting</h3>
+                        <p class="service-price">Aplicação R$ 95</p>
+                        <p class="service-info">Técnica sem manutenção</p>
+                        <button class="btn-schedule" onclick="openModal('Lash Lifting', 95, 'sem-manutencao')">
+                            Agendar Este Serviço
+                        </button>
                     </div>
                 </div>
 
                 <!-- Card 2: Fio a Fio -->
-                <div class="service-card" data-service="Fio a Fio" data-price="90">
-                    <div class="card-image">
-                        <img src="assets/fio-a-fio.jpg" alt="Fio a Fio" onerror="this.src='https://via.placeholder.com/400x300?text=Fio+a+Fio'">
-                    </div>
-                    <div class="card-content">
-                        <h3>Fio a Fio</h3>
-                        <p class="price">Aplicação R$ 90</p>
-                        <p class="info">Técnica sem manutenção</p>
-                        <button class="btn-agendar" onclick="openBookingModal('Fio a Fio', 90)">Agendar este serviço</button>
+                <div class="service-card">
+                    <img src="assets/fio-a-fio.jpg" alt="Fio a Fio" class="service-image">
+                    <div class="service-content">
+                        <h3 class="service-name">Fio a Fio</h3>
+                        <p class="service-price">Aplicação R$ 90</p>
+                        <p class="service-info">Técnica sem manutenção</p>
+                        <button class="btn-schedule" onclick="openModal('Fio a Fio', 90, 'sem-manutencao')">
+                            Agendar Este Serviço
+                        </button>
                     </div>
                 </div>
 
-                <!-- Card 3: Volume Brasileiro -->
-                <div class="service-card" data-service="Volume Brasileiro" data-price="100">
-                    <div class="card-image">
-                        <img src="assets/volume-brasileiro.jpg" alt="Volume Brasileiro" onerror="this.src='https://via.placeholder.com/400x300?text=Volume+Brasileiro'">
-                    </div>
-                    <div class="card-content">
-                        <h3>Volume Brasileiro</h3>
-                        <p class="price">Aplicação R$ 100 | Manutenção R$ 90</p>
-                        <p class="info">Manutenção de 15 a 20 dias</p>
-                        <button class="btn-agendar" onclick="openBookingModal('Volume Brasileiro', 100)">Agendar este serviço</button>
+                <!-- Card 3: Volume Brasileiro (DESTAQUE) -->
+                <div class="service-card featured">
+                    <img src="assets/volume-brasileiro.jpg" alt="Volume Brasileiro" class="service-image">
+                    <div class="service-content">
+                        <h3 class="service-name">Volume Brasileiro</h3>
+                        <p class="service-price">Aplicação R$ 100 | Manutenção R$ 90</p>
+                        <p class="service-info">Manutenção de 15 a 20 dias</p>
+                        <button class="btn-schedule" onclick="openModal('Volume Brasileiro', 100, '15-20-dias')">
+                            Agendar Este Serviço
+                        </button>
                     </div>
                 </div>
 
                 <!-- Card 4: Volume Egípcio -->
-                <div class="service-card" data-service="Volume Egípcio" data-price="110">
-                    <div class="card-image">
-                        <img src="assets/volume-egipcio.jpg" alt="Volume Egípcio" onerror="this.src='https://via.placeholder.com/400x300?text=Volume+Egípcio'">
-                    </div>
-                    <div class="card-content">
-                        <h3>Volume Egípcio</h3>
-                        <p class="price">Aplicação R$ 110 | Manutenção R$ 100</p>
-                        <p class="info">Manutenção de 15 a 20 dias</p>
-                        <button class="btn-agendar" onclick="openBookingModal('Volume Egípcio', 110)">Agendar este serviço</button>
+                <div class="service-card">
+                    <img src="assets/volume-egipcio.jpg" alt="Volume Egípcio" class="service-image">
+                    <div class="service-content">
+                        <h3 class="service-name">Volume Egípcio</h3>
+                        <p class="service-price">Aplicação R$ 110 | Manutenção R$ 100</p>
+                        <p class="service-info">Manutenção de 15 a 20 dias</p>
+                        <button class="btn-schedule" onclick="openModal('Volume Egípcio', 110, '15-20-dias')">
+                            Agendar Este Serviço
+                        </button>
                     </div>
                 </div>
 
                 <!-- Card 5: Anime -->
-                <div class="service-card" data-service="Anime" data-price="130">
-                    <div class="card-image">
-                        <img src="assets/anime.jpg" alt="Anime" onerror="this.src='https://via.placeholder.com/400x300?text=Anime'">
-                    </div>
-                    <div class="card-content">
-                        <h3>Anime</h3>
-                        <p class="price">Aplicação R$ 130</p>
-                        <p class="info">Técnica sem manutenção</p>
-                        <button class="btn-agendar" onclick="openBookingModal('Anime', 130)">Agendar este serviço</button>
+                <div class="service-card">
+                    <img src="assets/anime.jpg" alt="Anime" class="service-image">
+                    <div class="service-content">
+                        <h3 class="service-name">Anime</h3>
+                        <p class="service-price">Aplicação R$ 130</p>
+                        <p class="service-info">Técnica sem manutenção</p>
+                        <button class="btn-schedule" onclick="openModal('Anime', 130, 'sem-manutencao')">
+                            Agendar Este Serviço
+                        </button>
                     </div>
                 </div>
             </div>
-        </section>
-    </main>
+        </div>
+    </section>
 
     <!-- Modal de Agendamento -->
-    <div id="bookingModal" class="modal">
+    <div class="modal-overlay" id="bookingModal">
         <div class="modal-content">
-            <span class="close-modal" onclick="closeBookingModal()">&times;</span>
-            <div class="modal-header">
-                <h2>Agendar Serviço</h2>
-                <div class="warning-box">
-                    <p>⚠️ Importante: Nosso espaço é limitado e não podemos receber acompanhantes. Agradecemos a compreensão!</p>
-                </div>
+            <button class="modal-close" onclick="closeModal()">×</button>
+            
+            <h2 class="modal-title">Agendar Horário</h2>
+            <p class="modal-subtitle">Preencha os dados abaixo para confirmar seu agendamento</p>
+            
+            <!-- Alerta -->
+            <div class="alert-box">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                </svg>
+                <p><strong>Importante:</strong> Nosso espaço é limitado e não podemos receber acompanhantes. Agradecemos a compreensão!</p>
             </div>
+            
+            <!-- Formulário -->
             <form id="bookingForm">
-                <input type="hidden" id="selectedService">
-                <input type="hidden" id="selectedPrice">
-                
-                <div class="form-grid">
-                    <div class="form-left">
-                        <div class="form-group">
-                            <label for="clientName">Nome Completo:</label>
-                            <input type="text" id="clientName" required placeholder="Seu nome completo">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="clientPhone">WhatsApp:</label>
-                            <input type="tel" id="clientPhone" required placeholder="(00) 00000-0000">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="clientAddress">Endereço Completo:</label>
-                            <input type="text" id="clientAddress" required placeholder="Rua, número, bairro">
-                        </div>
-                    </div>
-
-                    <div class="form-right">
-                        <div class="calendar-container">
-                            <div class="calendar-header">
-                                <button type="button" id="prevMonth"><i class="fas fa-chevron-left"></i></button>
-                                <h3 id="currentMonthYear">Mês Ano</h3>
-                                <button type="button" id="nextMonth"><i class="fas fa-chevron-right"></i></button>
-                            </div>
-                            <div class="calendar-weekdays">
-                                <div>Dom</div><div>Seg</div><div>Ter</div><div>Qua</div><div>Qui</div><div>Sex</div><div>Sáb</div>
-                            </div>
-                            <div id="calendarDays" class="calendar-days"></div>
-                        </div>
-                        
-                        <div class="form-group mt-20">
-                            <label for="bookingTime">Horários Disponíveis:</label>
-                            <select id="bookingTime" required disabled>
-                                <option value="">Selecione um dia primeiro...</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="bookingSummary" class="booking-summary" style="display: none;">
-                    <h3>Resumo do Agendamento</h3>
-                    <p><strong>Serviço:</strong> <span id="summaryService"></span></p>
-                    <p><strong>Valor:</strong> R$ <span id="summaryPrice"></span></p>
-                    <p><strong>Data:</strong> <span id="summaryDate"></span></p>
-                    <p><strong>Horário:</strong> <span id="summaryTime"></span></p>
+                <div class="form-group">
+                    <label for="clientName">Nome Completo *</label>
+                    <input type="text" id="clientName" name="clientName" required placeholder="Digite seu nome completo">
                 </div>
                 
-                <button type="submit" class="btn-confirm">Confirmar Agendamento</button>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="clientPhone">Telefone (WhatsApp) *</label>
+                        <input type="tel" id="clientPhone" name="clientPhone" required placeholder="(00) 00000-0000">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="clientAddress">Endereço *</label>
+                        <input type="text" id="clientAddress" name="clientAddress" required placeholder="Rua, número, bairro">
+                    </div>
+                </div>
+                
+                <!-- Calendário -->
+                <div class="calendar-container">
+                    <div class="calendar-header">
+                        <button type="button" class="calendar-nav" onclick="changeMonth(-1)">‹</button>
+                        <h3 id="currentMonth">Carregando...</h3>
+                        <button type="button" class="calendar-nav" onclick="changeMonth(1)">›</button>
+                    </div>
+                    
+                    <div class="calendar-grid" id="calendarGrid">
+                        <!-- Gerado via JavaScript -->
+                    </div>
+                </div>
+                
+                <!-- Horários -->
+                <div class="time-slots" id="timeSlotsContainer" style="display: none;">
+                    <h4>Horários Disponíveis</h4>
+                    <div class="time-grid" id="timeGrid">
+                        <!-- Gerado via JavaScript -->
+                    </div>
+                </div>
+                
+                <!-- Resumo -->
+                <div class="order-summary" id="orderSummary" style="display: none;">
+                    <h4>📋 Resumo do Agendamento</h4>
+                    <div class="summary-item">
+                        <span class="summary-label">Serviço:</span>
+                        <span class="summary-value" id="summaryService">-</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Valor:</span>
+                        <span class="summary-value" id="summaryPrice">-</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Data:</span>
+                        <span class="summary-value" id="summaryDate">-</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Horário:</span>
+                        <span class="summary-value" id="summaryTime">-</span>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn-confirm" id="confirmBtn" disabled>
+                    Confirmar Agendamento
+                </button>
             </form>
         </div>
     </div>
 
+    <!-- Botão WhatsApp Flutuante -->
+    <a href="https://wa.me/557381676132?text=Olá!%20Gostaria%20de%20mais%20informações%20sobre%20os%20serviços." 
+       class="whatsapp-float" 
+       target="_blank" 
+       rel="noopener noreferrer"
+       aria-label="Conversar no WhatsApp">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+            <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
+        </svg>
+    </a>
+
+    <!-- Footer Premium -->
     <footer>
-        <div class="container">
+        <div class="footer-content">
             <div class="footer-info">
-                <p><i class="fab fa-whatsapp"></i> WhatsApp: (73) 8167-6132</p>
-                <p><i class="far fa-clock"></i> Seg-Sex: 19h - 21h | Sáb: 09h - 21h</p>
+                <p>
+                    <svg viewBox="0 0 24 24"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56-.35-.12-.74-.03-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/></svg>
+                    <a href="https://wa.me/557381676132" target="_blank">WhatsApp: (73) 8167-6132</a>
+                </p>
+                <p>
+                    <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+                    Seg-Sex: 19h - 21h | Sáb: 09h - 21h
+                </p>
             </div>
+            
             <div class="social-links">
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#" class="social-link" aria-label="Instagram">
+                    <svg viewBox="0 0 24 24"><path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4H7.6m9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8 1.25 1.25 0 0 1 16 6.75a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3z"/></svg>
+                </a>
+                <a href="#" class="social-link" aria-label="Facebook">
+                    <svg viewBox="0 0 24 24"><path d="M12 2.04C6.5 2.04 2 6.53 2 12.06C2 17.06 5.66 21.21 10.44 21.96V14.96H7.9V12.06H10.44V9.85C10.44 7.34 11.93 5.96 14.15 5.96C15.21 5.96 16.12 6.04 16.36 6.07V8.83H14.83C13.63 8.83 13.4 9.4 13.4 10.2V12.06H16.2L15.81 14.96H13.4V21.96C18.18 21.21 21.84 17.06 21.84 12.06C21.84 6.53 17.34 2.04 12 2.04Z"/></svg>
+                </a>
             </div>
-            <p class="copyright">&copy; 2026 Yas Femme Studio Catálogo. Todos os direitos reservados.</p>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 Yas Femme Studio Catálogo. Todos os direitos reservados.</p>
+            </div>
         </div>
     </footer>
 
     <script src="script.js"></script>
-<!-- Botão Flutuante do WhatsApp -->
-<a href="https://wa.me/557381676132?text=Olá!%20Gostaria%20de%20mais%20informações%20sobre%20os%20serviços." 
-   class="whatsapp-float" 
-   target="_blank" 
-   rel="noopener noreferrer"
-   aria-label="Conversar no WhatsApp">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-        <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
-    </svg>
-</a>
 </body>
 </html>
