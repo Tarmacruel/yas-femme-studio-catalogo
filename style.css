@@ -597,3 +597,214 @@ footer {
         height: 28px;
     }
 }
+/* ==========================================
+   INDICADORES DE URGÊNCIA
+   ========================================== */
+
+.urgency-indicators {
+    background: linear-gradient(135deg, var(--preto) 0%, #2d2d2d 100%);
+    padding: 30px 0;
+    margin-bottom: 40px;
+    border-bottom: 3px solid var(--dourado);
+}
+
+.urgency-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+}
+
+.urgency-badge {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 2px solid var(--rosa);
+    border-radius: 15px;
+    padding: 15px 25px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex: 1;
+    min-width: 280px;
+    max-width: 400px;
+    transition: all 0.3s ease;
+    animation: slideInDown 0.6s ease;
+}
+
+.urgency-badge:hover {
+    transform: translateY(-3px);
+    background: rgba(255, 182, 193, 0.15);
+    box-shadow: 0 8px 20px rgba(255, 182, 193, 0.3);
+}
+
+.urgency-icon {
+    font-size: 2rem;
+    animation: bounce 2s infinite;
+}
+
+.urgency-content {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.urgency-label {
+    font-size: 0.85rem;
+    color: #ccc;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.urgency-value {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--branco);
+}
+
+.urgency-alert {
+    background: linear-gradient(135deg, var(--dourado) 0%, #ffed4e 100%);
+    color: var(--preto);
+    padding: 15px 30px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    animation: pulse-alert 2s infinite;
+    flex: 1;
+    min-width: 300px;
+    max-width: 500px;
+    text-align: center;
+    justify-content: center;
+}
+
+.alert-icon {
+    font-size: 1.5rem;
+}
+
+.alert-text {
+    font-size: 1rem;
+}
+
+/* Cores dinâmicas baseadas na disponibilidade */
+.urgency-badge.high-availability {
+    border-color: #4CAF50; /* Verde */
+}
+
+.urgency-badge.high-availability .urgency-value {
+    color: #4CAF50;
+}
+
+.urgency-badge.medium-availability {
+    border-color: var(--dourado); /* Amarelo/Dourado */
+}
+
+.urgency-badge.medium-availability .urgency-value {
+    color: var(--dourado);
+}
+
+.urgency-badge.low-availability {
+    border-color: #f44336; /* Vermelho */
+    animation: pulse-urgent 1.5s infinite;
+}
+
+.urgency-badge.low-availability .urgency-value {
+    color: #f44336;
+}
+
+/* Animações */
+@keyframes slideInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-10px);
+    }
+    60% {
+        transform: translateY(-5px);
+    }
+}
+
+@keyframes pulse-alert {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7);
+    }
+    50% {
+        box-shadow: 0 0 0 10px rgba(255, 215, 0, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 215, 0, 0);
+    }
+}
+
+@keyframes pulse-urgent {
+    0% {
+        box-shadow: 0 0 0 0 rgba(244, 67, 54, 0.7);
+    }
+    50% {
+        box-shadow: 0 0 0 8px rgba(244, 67, 54, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(244, 67, 54, 0);
+    }
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .urgency-indicators {
+        padding: 20px 0;
+    }
+    
+    .urgency-container {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .urgency-badge,
+    .urgency-alert {
+        min-width: 100%;
+        max-width: 100%;
+        padding: 12px 20px;
+    }
+    
+    .urgency-icon {
+        font-size: 1.5rem;
+    }
+    
+    .urgency-value {
+        font-size: 1rem;
+    }
+    
+    .alert-text {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .urgency-badge {
+        padding: 10px 15px;
+    }
+    
+    .urgency-label {
+        font-size: 0.75rem;
+    }
+    
+    .urgency-value {
+        font-size: 0.9rem;
+    }
+}
