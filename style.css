@@ -55,7 +55,8 @@ h1, h2, h3 {
     height: 600px;
     background-image: url('assets/header.jpg');
     background-size: cover;
-    background-position: center center;
+    background-position: center top; /* Garante que o topo/rosto apareça */
+    background-repeat: no-repeat;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -63,6 +64,21 @@ h1, h2, h3 {
     color: var(--branco);
     overflow: hidden;
     border-bottom: 3px solid var(--dourado);
+}
+
+@media (min-width: 768px) {
+    .hero-header {
+        background-size: contain; /* Evita cortes no desktop */
+        background-color: var(--preto); /* Fundo preto para preencher laterais se necessário */
+        min-height: 700px;
+    }
+}
+
+@media (max-width: 767px) {
+    .hero-header {
+        background-size: cover; /* Mantém cover no mobile que já está bom */
+        height: 450px;
+    }
 }
 
 .hero-overlay {
@@ -384,6 +400,12 @@ h1, h2, h3 {
 
 .calendar-day.weekend {
     color: #d9534f;
+}
+
+.calendar-day.sunday {
+    color: #ccc !important;
+    cursor: not-allowed !important;
+    background-color: #f9f9f9;
 }
 
 .calendar-day.weekend.disabled {

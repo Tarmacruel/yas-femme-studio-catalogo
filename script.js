@@ -91,9 +91,13 @@ function renderCalendar() {
             dayDiv.classList.add('weekend');
         }
         
-        // Bloquear dias passados ou muito distantes
-        if (date < today || date > maxDate) {
+        // Bloquear dias passados, domingos ou muito distantes
+        if (date < today || date > maxDate || date.getDay() === 0) {
             dayDiv.classList.add('disabled');
+            if (date.getDay() === 0) {
+                dayDiv.classList.add('sunday');
+                dayDiv.title = "Não trabalhamos aos domingos";
+            }
         } else {
             dayDiv.addEventListener('click', () => selectDate(date));
             
@@ -159,6 +163,21 @@ function updateAvailableTimes() {
         times = ['09:00', '11:00', '13:00', '15:00', '17:00', '19:00', '21:00'];
     } else {
         times = ['19:00', '21:00'];
+    }
+
+    // Filtrar horários passados se a data selecionada for hoje
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const selectedDateObj = new Date(selectedDate);
+    selectedDateObj.setHours(0, 0, 0, 0);
+
+    if (selectedDateObj.getTime() === today.getTime()) {
+        const now = new Date();
+        const currentHour = now.getHours();
+        times = times.filter(time => {
+            const hour = parseInt(time.split(':')[0]);
+            return hour > currentHour;
+        });
     }
 
     const appointments = JSON.parse(localStorage.getItem('yas_femme_appointments') || '[]');
