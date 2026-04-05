@@ -222,6 +222,88 @@
         </svg>
     </a>
 
+<!-- Seção de Pagamento -->
+<section id="pagamento" class="payment-section">
+    <div class="container">
+        <h2 class="section-title">Formas de Pagamento</h2>
+        <p class="section-subtitle">Escolha a forma que preferir</p>
+        
+        <div class="payment-container">
+            <!-- PIX -->
+            <div class="payment-card">
+                <div class="payment-icon pix-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M19.5 4.5h-6V2h-3v2.5h-6C3.12 4.5 2 5.62 2 7v10c0 1.38 1.12 2.5 2.5 2.5h6V22h3v-2.5h6c1.38 0 2.5-1.12 2.5-2.5V7c0-1.38-1.12-2.5-2.5-2.5zm0 12.5h-6v-2.5h-3V17h-6V7h6v2.5h3V7h6v10z"/>
+                        <path d="M7 9.5l2.5 2.5L7 14.5M17 9.5l-2.5 2.5 2.5 2.5"/>
+                    </svg>
+                </div>
+                <h3>PIX</h3>
+                <p class="payment-desc">Pagamento instantâneo e seguro</p>
+                
+                <div class="pix-key-container">
+                    <p class="pix-label">Chave PIX (Telefone):</p>
+                    <div class="pix-key-box">
+                        <input type="text" 
+                               value="(73) 8167-6132" 
+                               id="pixKey" 
+                               readonly 
+                               class="pix-key-input">
+                        <button onclick="copyPixKey()" 
+                                class="btn-copy-pix" 
+                                id="btnCopyPix"
+                                title="Copiar chave PIX">
+                            <svg viewBox="0 0 24 24" class="copy-icon">
+                                <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                            </svg>
+                            <span id="copyText">Copiar</span>
+                        </button>
+                    </div>
+                    <p class="pix-hint">Clique para copiar e facilitar o pagamento</p>
+                </div>
+                
+                <div class="payment-benefits">
+                    <span class="benefit-item">✓ Confirmação imediata</span>
+                    <span class="benefit-item">✓ Sem taxas</span>
+                    <span class="benefit-item">✓ 24 horas</span>
+                </div>
+            </div>
+
+            <!-- Dinheiro -->
+            <div class="payment-card">
+                <div class="payment-icon money-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1.41 16.09V20h-2.67v-1.93c-1.71-.36-3.15-1.46-3.27-3.4h1.96c.1 1.05.82 1.87 2.65 1.87 1.96 0 2.4-.98 2.4-1.59 0-.83-.44-1.61-2.67-2.14-2.48-.6-4.18-1.62-4.18-3.67 0-1.72 1.39-2.84 3.11-3.21V4h2.67v1.95c1.86.45 2.79 1.86 2.85 3.39H14.3c-.05-1.11-.64-1.87-2.22-1.87-1.5 0-2.4.68-2.4 1.64 0 .84.65 1.39 2.67 1.91s4.18 1.39 4.18 3.91c-.01 1.83-1.38 2.83-3.12 3.16z"/>
+                    </svg>
+                </div>
+                <h3>Dinheiro</h3>
+                <p class="payment-desc">Pagamento em espécie no local</p>
+                
+                <div class="money-info">
+                    <p class="money-text">Aceitamos pagamento em dinheiro no momento do atendimento.</p>
+                    <div class="money-features">
+                        <span class="feature-badge">💵 Sem taxa</span>
+                        <span class="feature-badge">📝 Recibo</span>
+                    </div>
+                </div>
+                
+                <div class="payment-benefits">
+                    <span class="benefit-item">✓ Pagamento no local</span>
+                    <span class="benefit-item">✓ Sem complicações</span>
+                    <span class="benefit-item">✓ Recibo fornecido</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mensagem Importante -->
+        <div class="payment-notice">
+            <svg viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+            </svg>
+            <p><strong>Importante:</strong> O pagamento deve ser realizado no momento do atendimento. Para PIX, recomendamos realizar antes ou durante a sessão.</p>
+        </div>
+    </div>
+</section>
+    
 <!-- Seção de Localização -->
 <section id="localizacao" class="location-section">
     <div class="container">
