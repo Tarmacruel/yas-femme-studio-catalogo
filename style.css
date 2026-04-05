@@ -1998,3 +1998,231 @@ footer::before {
 .social-link[aria-label="Instagram"]:hover svg {
     fill: white;
 }
+/* ==========================================
+   LISTA DE ESPERA - ESTILOS
+   ========================================== */
+
+.no-slots-message {
+    text-align: center;
+    padding: 30px 20px;
+    background: linear-gradient(135deg, rgba(255, 182, 193, 0.1) 0%, rgba(255, 215, 0, 0.05) 100%);
+    border-radius: 16px;
+    border: 2px dashed var(--rosa);
+    margin: 20px 0;
+}
+
+.no-slots-icon {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 15px;
+    background: linear-gradient(135deg, var(--rosa) 0%, var(--rosa-escuro) 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.no-slots-icon svg {
+    width: 30px;
+    height: 30px;
+    fill: white;
+}
+
+.no-slots-message h4 {
+    color: var(--preto);
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+}
+
+.no-slots-message p {
+    color: #666;
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+}
+
+.btn-waitlist {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px 28px;
+    background: linear-gradient(135deg, var(--preto) 0%, var(--preto-claro) 100%);
+    color: var(--branco);
+    border: none;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    margin-bottom: 10px;
+}
+
+.btn-waitlist:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(135deg, var(--rosa) 0%, var(--rosa-escuro) 100%);
+}
+
+.btn-icon-small {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
+.waitlist-hint {
+    font-size: 0.85rem;
+    color: #888;
+    font-style: italic;
+    margin: 0;
+}
+
+/* Modal Lista de Espera */
+#waitlistModal .modal-content {
+    max-width: 550px;
+}
+
+.waitlist-summary {
+    background: var(--cinza-claro);
+    padding: 20px;
+    border-radius: 12px;
+    margin: 25px 0;
+    border-left: 4px solid var(--dourado);
+}
+
+.waitlist-summary h4 {
+    margin-bottom: 15px;
+    color: var(--preto);
+    font-size: 1.1rem;
+}
+
+.waitlist-summary p {
+    margin: 8px 0;
+    font-size: 0.95rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.waitlist-summary strong {
+    color: #666;
+}
+
+#waitlistForm textarea {
+    width: 100%;
+    padding: 14px 18px;
+    border: 2px solid var(--cinza);
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    font-family: 'Poppins', sans-serif;
+    resize: vertical;
+    min-height: 80px;
+}
+
+#waitlistForm textarea:focus {
+    outline: none;
+    border-color: var(--rosa);
+    box-shadow: 0 0 0 4px rgba(255, 182, 193, 0.2);
+}
+
+.btn-waitlist-confirm {
+    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+    box-shadow: 0 6px 25px rgba(76, 175, 80, 0.4);
+}
+
+.btn-waitlist-confirm:hover {
+    box-shadow: 0 10px 35px rgba(76, 175, 80, 0.6);
+    background: linear-gradient(135deg, #45a049 0%, #3d8b40 100%);
+}
+
+/* Confirmação de Sucesso */
+.waitlist-success {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.waitlist-success-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 20px;
+    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: successPop 0.5s ease;
+}
+
+.waitlist-success-icon svg {
+    width: 40px;
+    height: 40px;
+    fill: white;
+}
+
+@keyframes successPop {
+    0% { transform: scale(0); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+.waitlist-success h3 {
+    color: var(--preto);
+    margin-bottom: 15px;
+    font-size: 1.5rem;
+}
+
+.waitlist-success p {
+    color: #666;
+    margin-bottom: 25px;
+    line-height: 1.6;
+}
+
+.waitlist-next-steps {
+    background: var(--cinza-claro);
+    padding: 20px;
+    border-radius: 12px;
+    text-align: left;
+}
+
+.waitlist-next-steps h4 {
+    margin-bottom: 12px;
+    color: var(--preto);
+}
+
+.waitlist-next-steps ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.waitlist-next-steps li {
+    padding: 8px 0;
+    color: #666;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.waitlist-next-steps li::before {
+    content: '✓';
+    color: #4CAF50;
+    font-weight: bold;
+}
+
+/* Responsividade */
+@media (max-width: 480px) {
+    .no-slots-message {
+        padding: 25px 15px;
+    }
+    
+    .btn-waitlist {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .waitlist-summary p {
+        flex-direction: column;
+        gap: 3px;
+    }
+}
