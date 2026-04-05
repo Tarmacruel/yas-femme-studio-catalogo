@@ -549,3 +549,255 @@ document.getElementById('bookingModal').addEventListener('click', function(e) {
         closeModal();
     }
 });
+// ==========================================
+// SISTEMA DE LISTA DE ESPERA
+// ==========================================
+
+// Abrir Modal da Lista de Espera
+function openWaitlistModal() {
+    // Preencher dados do serviço
+    document.getElementById('waitlistService').value = currentService || '';
+    document.getElementById('waitlistPrice').value = currentPrice || '';
+    document.getElementById('waitlistPreferredDate').value = selectedDate ? formatDateISO(selectedDate) : '';
+    
+    document.getElementById('wlService').textContent = currentService || 'Não especificado';
+    document.getElementById('wlPrice').textContent = currentPrice ? `R$ ${currentPrice},00` : 'Não especificado';
+    document.getElementById('wlDate').textContent = selectedDate ? formatRelativeDate(selectedDate) : 'Qualquer data';
+    
+    // Mostrar modal
+    document.getElementById('waitlistModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+    
+    // Máscara para telefone
+    setupWaitlistPhoneMask();
+}
+
+// Fechar Modal da Lista de Espera
+function closeWaitlistModal() {
+    document.getElementById('waitlistModal').classList.remove('active');
+    document.body.style.overflow = '';
+    document.getElementById('waitlistForm').reset();
+}
+
+// Máscara para telefone do waitlist
+function setupWaitlistPhoneMask() {
+    const phoneInput = document.getElementById('waitlistPhone');
+    if (phoneInput) {
+        phoneInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length <= 11) {
+                value = value.replace(/^(\d{2})(\d)/g, '($1) $2');
+                value = value.replace(/(\d)(\d{4})$/, '$1-$2');
+                e.target.value = value;
+            }
+        });
+    }
+}
+
+// Formatar período para exibição
+function formatPeriod(period) {
+    const periods = {
+        'esta-semana': 'Esta semana',
+        'proxima-semana': 'Próxima semana',
+        'quinzena': 'Próximos 15 dias',
+        'mes': 'Próximo mês',
+        'flexivel': 'Qualquer data'
+    };
+    return periods[period] || period;
+}
+
+// Salvar na Lista de Espera
+document.getElementById('waitlistForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const entry = {
+        id: Date.now(),
+        name: document.getElementById('waitlistName').value,
+        phone: document.getElementById('waitlistPhone').value,
+        service: document.getElementById('waitlistService').value,
+        price: document.getElementById('waitlistPrice').value,
+        period: document.getElementById('waitlistPeriod').value,
+        periodLabel: formatPeriod(document.getElementById('waitlistPeriod').value),
+        notes: document.getElementById('waitlistNotes').value,
+        preferredDate: document.getElementById('waitlistPreferredDate').value,
+        addedAt: new Date().toISOString()
+    };
+    
+    // Salvar no localStorage
+    const waitlist = JSON.parse(localStorage.getItem('yas_femme_waitlist') || '[]');
+    waitlist.push(entry);
+    localStorage.setItem('yas_femme_waitlist', JSON.stringify(waitlist));
+    
+    // Gerar mensagem para WhatsApp
+    const message = `🔔 *NOVA PESSOA NA LISTA DE ESPERA*\n\n` +
+                   `👤 *Nome:* ${entry.name}\n` +
+                   `📱 *WhatsApp:* ${entry.phone}\n` +
+                   `💅 *Serviço:* ${entry.service}\n` +
+                   `💰 *Valor:* ${entry.price ? `R$ ${entry.price},00` : 'N/A'}\n` +
+                   `📅 *Período:* ${entry.periodLabel}\n` +
+                   `${entry.notes ? `📝 *Obs:* ${entry.notes}\n` : ''}` +
+                   `\n⏰ *Entrou em:* ${new Date().toLocaleString('pt-BR')}`;
+    
+    const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+    
+    // Mostrar confirmação
+    showWaitlistSuccess();
+    
+    // Abrir WhatsApp após 1.5s
+    setTimeout(() => {
+        window.open(whatsappUrl, '_blank');
+    }, 1500);
+});
+
+// Mostrar Tela de Sucesso
+function showWaitlistSuccess() {
+    const modalContent = document.querySelector('#waitlistModal .modal-content');
+    
+    modalContent.innerHTML = `
+        <button class="modal-close" onclick="closeWaitlistModal()">×</button>
+        <div class="waitlist-success">
+            <div class="waitlist-success-icon">
+                <svg viewBox="0 0 24 24">
+                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                </svg>
+            </div>
+            <h3>Você está na lista! ✨</h3>
+            <p>Obrigada pelo interesse! Você será avisada pelo WhatsApp assim que abrir um horário para <strong>${currentService || 'o serviço escolhido'}</strong>.</p>
+            
+            <div class="waitlist-next-steps">
+                <h4>Próximos passos:</h4>
+                <ul>
+                    <li>Fique de olho no seu WhatsApp</li>
+                    <li>Responderei em até 24h se abrir vaga</li>
+                    <li>Horários de cancelamento são prioridade da lista</li>
+                </ul>
+            </div>
+            
+            <button class="btn-confirm" onclick="closeWaitlistModal()" style="margin-top: 25px;">
+                Entendi, obrigada! 💕
+            </button>
+        </div>
+    `;
+}
+
+// Verificar se há horários e mostrar mensagem adequada
+function checkAndShowSlots(times, appointments, dateStr) {
+    const availableTimes = times.filter(time => {
+        return !appointments.some(app => app.date === dateStr && app.time === time);
+    });
+    
+    const noSlotsMessage = document.getElementById('noSlotsMessage');
+    const timeSlotsContainer = document.getElementById('timeSlotsContainer');
+    
+    if (availableTimes.length === 0) {
+        // Não há horários - mostrar mensagem de lista de espera
+        timeSlotsContainer.style.display = 'none';
+        noSlotsMessage.style.display = 'block';
+        return false;
+    } else {
+        // Há horários - mostrar normalmente
+        timeSlotsContainer.style.display = 'block';
+        noSlotsMessage.style.display = 'none';
+        return true;
+    }
+}
+
+// Atualizar renderTimeSlots para usar a nova função
+const originalRenderTimeSlots = renderTimeSlots;
+renderTimeSlots = function() {
+    if (!selectedDate) return;
+    
+    const container = document.getElementById('timeSlotsContainer');
+    const grid = document.getElementById('timeGrid');
+    
+    container.style.display = 'block';
+    grid.innerHTML = '';
+    
+    const dayOfWeek = selectedDate.getDay();
+    const isSaturday = dayOfWeek === 6;
+    
+    let times = isSaturday ? 
+        ['09:00', '11:00', '13:00', '15:00', '17:00', '19:00', '21:00'] : 
+        ['19:00', '21:00'];
+    
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    if (selectedDate.getTime() === today.getTime()) {
+        const currentHour = new Date().getHours();
+        times = times.filter(time => parseInt(time) > currentHour);
+    }
+    
+    const appointments = JSON.parse(localStorage.getItem('yas_femme_appointments') || '[]');
+    const dateStr = formatDateISO(selectedDate);
+    
+    // Usar nova função para verificar disponibilidade
+    const hasSlots = checkAndShowSlots(times, appointments, dateStr);
+    
+    if (!hasSlots) return; // Já mostrou a mensagem de lista de espera
+    
+    // Renderizar slots normais
+    times.forEach(time => {
+        const slot = document.createElement('div');
+        slot.className = 'time-slot';
+        slot.textContent = time;
+        
+        const isOccupied = appointments.some(app => 
+            app.date === dateStr && app.time === time
+        );
+        
+        if (isOccupied) {
+            slot.classList.add('disabled');
+        } else {
+            slot.addEventListener('click', () => selectTime(time, slot));
+        }
+        
+        if (selectedTime === time) {
+            slot.classList.add('selected');
+        }
+        
+        grid.appendChild(slot);
+    });
+}
+
+// Fechar modal ao clicar fora (waitlist)
+document.addEventListener('DOMContentLoaded', function() {
+    const waitlistModal = document.getElementById('waitlistModal');
+    if (waitlistModal) {
+        waitlistModal.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeWaitlistModal();
+            }
+        });
+    }
+});
+
+// ==========================================
+// PAINEL ADMIN - LISTA DE ESPERA (OPCIONAL)
+// Para visualizar a lista, acesse o console e digite:
+// showWaitlistPanel()
+// ==========================================
+
+function showWaitlistPanel() {
+    const waitlist = JSON.parse(localStorage.getItem('yas_femme_waitlist') || '[]');
+    
+    if (waitlist.length === 0) {
+        console.log('📋 Lista de espera vazia');
+        return;
+    }
+    
+    console.log('📋 LISTA DE ESPERA - Yas Femme Studio');
+    console.log('='.repeat(50));
+    
+    waitlist.sort((a, b) => new Date(b.addedAt) - new Date(a.addedAt)).forEach((entry, index) => {
+        console.log(`\n#${index + 1} - ${entry.name}`);
+        console.log(`   📱 ${entry.phone}`);
+        console.log(`   💅 ${entry.service} (R$ ${entry.price},00)`);
+        console.log(`   📅 ${entry.periodLabel}`);
+        console.log(`   ⏰ ${new Date(entry.addedAt).toLocaleString('pt-BR')}`);
+        if (entry.notes) console.log(`   📝 ${entry.notes}`);
+    });
+    
+    console.log('\n' + '='.repeat(50));
+    console.log(`Total: ${waitlist.length} pessoa(s) na lista`);
+}
