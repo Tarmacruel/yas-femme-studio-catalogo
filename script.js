@@ -2,6 +2,210 @@
 const WHATSAPP_NUMBER = "557381676132";
 const DURATION_HOURS = 2;
 
+// Inicializar indicadores de urgência ao carregar a página
+document.addEventListener('DOMContentLoaded', function() {
+    updateUrgencyIndicators();
+    // Atualizar a cada 5 minutos
+    setInterval(updateUrgencyIndicators, 5 * 60 * 1000);
+});
+
+// Atualizar Indicadores de Urgência
+function updateUrgencyIndicators() {
+    const nextSlotElement = document.getElementById('nextSlotText');
+    const weeklySlotsElement = document.getElementById('weeklySlotsText');
+    const weeklyBadge = document.getElementById('weeklyAvailability');
+    const alertElement = document.getElementById('urgencyAlert');
+    
+    if (!nextSlotElement || !weeklySlotsElement) return;
+    
+    const appointments = JSON.parse(localStorage.getItem('yas_femme_appointments') || '[]');
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    // Encontrar próximo horário disponível
+    const nextAvailable = findNextAvailableSlot(appointments, today);
+    
+    // Calcular horários disponíveis esta semana
+    const weeklySlots = countWeeklyAvailableSlots(appointments, today);
+    
+    // Atualizar próximo horário
+    if (nextAvailable) {
+        const dateStr = formatRelativeDate(nextAvailable.date);
+        const timeStr = nextAvailable.time;
+        nextSlotElement.textContent = `${dateStr} às ${timeStr}`;
+    } else {
+        nextSlotElement.textContent = "Sem horários disponíveis";
+        nextSlotElement.style.color = "#f44336";
+    }
+    
+    // Atualizar contador semanal com cores dinâmicas
+    weeklySlotsElement.textContent = `${weeklySlots.available} de ${weeklySlots.total} horários`;
+    
+    // Remover classes anteriores
+    weeklyBadge.classList.remove('high-availability', 'medium-availability', 'low-availability');
+    
+    // Adicionar classe baseada na disponibilidade
+    const percentage = (weeklySlots.available / weeklySlots.total) * 100;
+    
+    if (percentage > 60) {
+        weeklyBadge.classList.add('high-availability');
+    } else if (percentage > 30) {
+        weeklyBadge.classList.add('medium-availability');
+    } else {
+        weeklyBadge.classList.add('low-availability');
+    }
+    
+    // Atualizar alerta de urgência
+    if (weeklySlots.available <= 3) {
+        alertElement.innerHTML = `
+            <span class="alert-icon">🔥</span>
+            <span class="alert-text">Últimos ${weeklySlots.available} horários esta semana!</span>
+        `;
+        alertElement.style.display = 'flex';
+    } else if (weeklySlots.available <= 5) {
+        alertElement.innerHTML = `
+            <span class="alert-icon">⚡</span>
+            <span class="alert-text">Corra! Apenas ${weeklySlots.available} horários disponíveis!</span>
+        `;
+        alertElement.style.display = 'flex';
+    } else {
+        alertElement.style.display = 'none';
+    }
+}
+
+// Encontrar Próximo Horário Disponível
+function findNextAvailableSlot(appointments, startDate) {
+    const maxSearchDays = 60; // Buscar até 60 dias à frente
+    
+    for (let day = 0; day < maxSearchDays; day++) {
+        const currentDate = new Date(startDate);
+        currentDate.setDate(startDate.getDate() + day);
+        
+        // Pular domingos
+        if (currentDate.getDay() === 0) continue;
+        
+        const dayOfWeek = currentDate.getDay();
+        const isSaturday = dayOfWeek === 6;
+        
+        // Definir horários baseados no dia
+        let times = [];
+        if (isSaturday) {
+            times = ['09:00', '11:00', '13:00', '15:00', '17:00', '19:00', '21:00'];
+        } else {
+            times = ['19:00', '21:00'];
+        }
+        
+        // Se for hoje, filtrar horários passados
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        
+        if (currentDate.getTime() === today.getTime()) {
+            const currentHour = new Date().getHours();
+            times = times.filter(time => {
+                const hour = parseInt(time.split(':')[0]);
+                return hour > currentHour;
+            });
+        }
+        
+        // Verificar cada horário
+        const dateStr = formatDateISO(currentDate);
+        for (const time of times) {
+            const isOccupied = appointments.some(app => 
+                app.date === dateStr && app.time === time
+            );
+            
+            if (!isOccupied) {
+                return {
+                    date: currentDate,
+                    time: time
+                };
+            }
+        }
+    }
+    
+    return null; // Nenhum horário encontrado
+}
+
+// Contar Horários Disponíveis Esta Semana
+function countWeeklyAvailableSlots(appointments, startDate) {
+    // Encontrar próxima segunda-feira
+    const nextMonday = new Date(startDate);
+    const dayOfWeek = startDate.getDay();
+    const daysUntilMonday = dayOfWeek === 0 ? 1 : (8 - dayOfWeek);
+    nextMonday.setDate(startDate.getDate() + daysUntilMonday);
+    nextMonday.setHours(0, 0, 0, 0);
+    
+    // Calcular até sábado (6 dias depois)
+    const saturday = new Date(nextMonday);
+    saturday.setDate(nextMonday.getDate() + 5);
+    
+    let totalSlots = 0;
+    let availableSlots = 0;
+    
+    // Percorrer de segunda a sábado
+    for (let d = new Date(nextMonday); d <= saturday; d.setDate(d.getDate() + 1)) {
+        const dayOfWeek = d.getDay();
+        
+        // Pular domingos
+        if (dayOfWeek === 0) continue;
+        
+        const isSaturday = dayOfWeek === 6;
+        let times = [];
+        
+        if (isSaturday) {
+            times = ['09:00', '11:00', '13:00', '15:00', '17:00', '19:00', '21:00'];
+        } else {
+            times = ['19:00', '21:00'];
+        }
+        
+        // Se for hoje, filtrar horários passados
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        
+        if (d.getTime() === today.getTime()) {
+            const currentHour = new Date().getHours();
+            times = times.filter(time => {
+                const hour = parseInt(time.split(':')[0]);
+                return hour > currentHour;
+            });
+        }
+        
+        totalSlots += times.length;
+        
+        // Contar disponíveis
+        const dateStr = formatDateISO(d);
+        availableSlots += times.filter(time => {
+            return !appointments.some(app => 
+                app.date === dateStr && app.time === time
+            );
+        }).length;
+    }
+    
+    return { total: totalSlots, available: availableSlots };
+}
+
+// Formatar Data Relativa (hoje, amanhã, etc)
+function formatRelativeDate(date) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    
+    const dateToCheck = new Date(date);
+    dateToCheck.setHours(0, 0, 0, 0);
+    
+    if (dateToCheck.getTime() === today.getTime()) {
+        return "Hoje";
+    } else if (dateToCheck.getTime() === tomorrow.getTime()) {
+        return "Amanhã";
+    } else {
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        return `${day}/${month}`;
+    }
+}
+
 // Elementos do DOM
 const modal = document.getElementById('bookingModal');
 const bookingForm = document.getElementById('bookingForm');
