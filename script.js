@@ -1,15 +1,63 @@
-// Configurações e Dados
+// ==========================================
+// YAS FEMME STUDIO - SISTEMA PREMIUM
+// ==========================================
+
 const WHATSAPP_NUMBER = "557381676132";
 const DURATION_HOURS = 2;
 
-// Inicializar indicadores de urgência ao carregar a página
+// Estado do Calendário
+let currentDate = new Date();
+let selectedDate = null;
+let selectedTime = null;
+let currentService = null;
+let currentPrice = null;
+
+// Inicialização
 document.addEventListener('DOMContentLoaded', function() {
     updateUrgencyIndicators();
-    // Atualizar a cada 5 minutos
     setInterval(updateUrgencyIndicators, 5 * 60 * 1000);
+    
+    // Máscara para telefone
+    setupPhoneMask();
+    
+    // Scroll reveal
+    setupScrollReveal();
 });
 
-// Atualizar Indicadores de Urgência
+// Máscara de Telefone
+function setupPhoneMask() {
+    const phoneInput = document.getElementById('clientPhone');
+    if (phoneInput) {
+        phoneInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length <= 11) {
+                value = value.replace(/^(\d{2})(\d)/g, '($1) $2');
+                value = value.replace(/(\d)(\d{4})$/, '$1-$2');
+                e.target.value = value;
+            }
+        });
+    }
+}
+
+// Scroll Reveal Animation
+function setupScrollReveal() {
+    const reveals = document.querySelectorAll('.service-card');
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('reveal', 'active');
+            }
+        });
+    }, { threshold: 0.1 });
+    
+    reveals.forEach(card => observer.observe(card));
+}
+
+// ==========================================
+// SISTEMA DE URGÊNCIA
+// ==========================================
+
 function updateUrgencyIndicators() {
     const nextSlotElement = document.getElementById('nextSlotText');
     const weeklySlotsElement = document.getElementById('weeklySlotsText');
@@ -22,30 +70,23 @@ function updateUrgencyIndicators() {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     
-    // Encontrar próximo horário disponível
     const nextAvailable = findNextAvailableSlot(appointments, today);
-    
-    // Calcular horários disponíveis esta semana
     const weeklySlots = countWeeklyAvailableSlots(appointments, today);
     
-    // Atualizar próximo horário
     if (nextAvailable) {
         const dateStr = formatRelativeDate(nextAvailable.date);
         const timeStr = nextAvailable.time;
         nextSlotElement.textContent = `${dateStr} às ${timeStr}`;
     } else {
         nextSlotElement.textContent = "Sem horários disponíveis";
-        nextSlotElement.style.color = "#f44336";
+        nextSlotElement.style.color = "#ff6b6b";
     }
     
-    // Atualizar contador semanal com cores dinâmicas
     weeklySlotsElement.textContent = `${weeklySlots.available} de ${weeklySlots.total} horários`;
     
-    // Remover classes anteriores
     weeklyBadge.classList.remove('high-availability', 'medium-availability', 'low-availability');
     
-    // Adicionar classe baseada na disponibilidade
-    const percentage = (weeklySlots.available / weeklySlots.total) * 100;
+    const percentage = weeklySlots.total > 0 ? (weeklySlots.available / weeklySlots.total) * 100 : 0;
     
     if (percentage > 60) {
         weeklyBadge.classList.add('high-availability');
@@ -55,124 +96,88 @@ function updateUrgencyIndicators() {
         weeklyBadge.classList.add('low-availability');
     }
     
-    // Atualizar alerta de urgência
-    if (weeklySlots.available <= 3) {
-        alertElement.innerHTML = `
-            <span class="alert-icon">🔥</span>
-            <span class="alert-text">Últimos ${weeklySlots.available} horários esta semana!</span>
-        `;
+    if (weeklySlots.available <= 3 && weeklySlots.available > 0) {
+        alertElement.innerHTML = `<span class="alert-icon">🔥</span><span class="alert-text">Últimos ${weeklySlots.available} horários esta semana!</span>`;
         alertElement.style.display = 'flex';
-    } else if (weeklySlots.available <= 5) {
-        alertElement.innerHTML = `
-            <span class="alert-icon">⚡</span>
-            <span class="alert-text">Corra! Apenas ${weeklySlots.available} horários disponíveis!</span>
-        `;
+    } else if (weeklySlots.available <= 5 && weeklySlots.available > 0) {
+        alertElement.innerHTML = `<span class="alert-icon">⚡</span><span class="alert-text">Corra! Apenas ${weeklySlots.available} horários!</span>`;
         alertElement.style.display = 'flex';
     } else {
         alertElement.style.display = 'none';
     }
 }
 
-// Encontrar Próximo Horário Disponível
 function findNextAvailableSlot(appointments, startDate) {
-    const maxSearchDays = 60; // Buscar até 60 dias à frente
+    const maxSearchDays = 60;
     
     for (let day = 0; day < maxSearchDays; day++) {
-        const currentDate = new Date(startDate);
-        currentDate.setDate(startDate.getDate() + day);
+        const checkDate = new Date(startDate);
+        checkDate.setDate(startDate.getDate() + day);
         
-        // Pular domingos
-        if (currentDate.getDay() === 0) continue;
+        if (checkDate.getDay() === 0) continue;
         
-        const dayOfWeek = currentDate.getDay();
+        const dayOfWeek = checkDate.getDay();
         const isSaturday = dayOfWeek === 6;
         
-        // Definir horários baseados no dia
-        let times = [];
-        if (isSaturday) {
-            times = ['09:00', '11:00', '13:00', '15:00', '17:00', '19:00', '21:00'];
-        } else {
-            times = ['19:00', '21:00'];
-        }
+        let times = isSaturday ? 
+            ['09:00', '11:00', '13:00', '15:00', '17:00', '19:00', '21:00'] : 
+            ['19:00', '21:00'];
         
-        // Se for hoje, filtrar horários passados
         const today = new Date();
         today.setHours(0, 0, 0, 0);
         
-        if (currentDate.getTime() === today.getTime()) {
+        if (checkDate.getTime() === today.getTime()) {
             const currentHour = new Date().getHours();
-            times = times.filter(time => {
-                const hour = parseInt(time.split(':')[0]);
-                return hour > currentHour;
-            });
+            times = times.filter(time => parseInt(time) > currentHour);
         }
         
-        // Verificar cada horário
-        const dateStr = formatDateISO(currentDate);
+        const dateStr = formatDateISO(checkDate);
         for (const time of times) {
             const isOccupied = appointments.some(app => 
                 app.date === dateStr && app.time === time
             );
             
             if (!isOccupied) {
-                return {
-                    date: currentDate,
-                    time: time
-                };
+                return { date: checkDate, time: time };
             }
         }
     }
     
-    return null; // Nenhum horário encontrado
+    return null;
 }
 
-// Contar Horários Disponíveis Esta Semana
 function countWeeklyAvailableSlots(appointments, startDate) {
-    // Encontrar próxima segunda-feira
     const nextMonday = new Date(startDate);
     const dayOfWeek = startDate.getDay();
     const daysUntilMonday = dayOfWeek === 0 ? 1 : (8 - dayOfWeek);
     nextMonday.setDate(startDate.getDate() + daysUntilMonday);
     nextMonday.setHours(0, 0, 0, 0);
     
-    // Calcular até sábado (6 dias depois)
     const saturday = new Date(nextMonday);
     saturday.setDate(nextMonday.getDate() + 5);
     
     let totalSlots = 0;
     let availableSlots = 0;
     
-    // Percorrer de segunda a sábado
     for (let d = new Date(nextMonday); d <= saturday; d.setDate(d.getDate() + 1)) {
         const dayOfWeek = d.getDay();
-        
-        // Pular domingos
         if (dayOfWeek === 0) continue;
         
         const isSaturday = dayOfWeek === 6;
-        let times = [];
+        let times = isSaturday ? 
+            ['09:00', '11:00', '13:00', '15:00', '17:00', '19:00', '21:00'] : 
+            ['19:00', '21:00'];
         
-        if (isSaturday) {
-            times = ['09:00', '11:00', '13:00', '15:00', '17:00', '19:00', '21:00'];
-        } else {
-            times = ['19:00', '21:00'];
-        }
-        
-        // Se for hoje, filtrar horários passados
         const today = new Date();
         today.setHours(0, 0, 0, 0);
         
         if (d.getTime() === today.getTime()) {
             const currentHour = new Date().getHours();
-            times = times.filter(time => {
-                const hour = parseInt(time.split(':')[0]);
-                return hour > currentHour;
-            });
+            times = times.filter(time => parseInt(time) > currentHour);
         }
         
         totalSlots += times.length;
         
-        // Contar disponíveis
         const dateStr = formatDateISO(d);
         availableSlots += times.filter(time => {
             return !appointments.some(app => 
@@ -184,7 +189,6 @@ function countWeeklyAvailableSlots(appointments, startDate) {
     return { total: totalSlots, available: availableSlots };
 }
 
-// Formatar Data Relativa (hoje, amanhã, etc)
 function formatRelativeDate(date) {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -206,297 +210,248 @@ function formatRelativeDate(date) {
     }
 }
 
-// Elementos do DOM
-const modal = document.getElementById('bookingModal');
-const bookingForm = document.getElementById('bookingForm');
-const bookingTimeSelect = document.getElementById('bookingTime');
-const summaryDiv = document.getElementById('bookingSummary');
-const calendarDays = document.getElementById('calendarDays');
-const currentMonthYear = document.getElementById('currentMonthYear');
-const prevMonthBtn = document.getElementById('prevMonth');
-const nextMonthBtn = document.getElementById('nextMonth');
-
-// Estado do Calendário
-let currentDate = new Date();
-let selectedDate = null;
-
-// Abrir Modal de Agendamento
-function openBookingModal(serviceName, price) {
-    document.getElementById('selectedService').value = serviceName;
-    document.getElementById('selectedPrice').value = price;
-    
-    // Atualizar resumo inicial
-    document.getElementById('summaryService').textContent = serviceName;
-    document.getElementById('summaryPrice').textContent = price;
-    
-    modal.style.display = 'block';
-    document.body.style.overflow = 'hidden';
-    
-    // Resetar estado do calendário ao abrir
-    currentDate = new Date();
-    selectedDate = null;
-    renderCalendar();
-    updateAvailableTimes();
+function formatDateISO(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
 }
 
-// Fechar Modal
-function closeBookingModal() {
-    modal.style.display = 'none';
-    document.body.style.overflow = 'auto';
-    bookingForm.reset();
-    summaryDiv.style.display = 'none';
-    bookingTimeSelect.disabled = true;
-    selectedDate = null;
-}
+// ==========================================
+// SISTEMA DE CALENDÁRIO
+// ==========================================
 
-// Fechar modal ao clicar fora dele
-window.onclick = function(event) {
-    if (event.target == modal) {
-        closeBookingModal();
-    }
-}
-
-// Lógica do Calendário
 function renderCalendar() {
-    calendarDays.innerHTML = '';
-    
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
     
-    const firstDayOfMonth = new Date(year, month, 1).getDay();
-    const lastDateOfMonth = new Date(year, month + 1, 0).getDate();
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
     
-    const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
-    currentMonthYear.textContent = `${monthNames[month]} ${year}`;
+    const monthNames = [
+        'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+        'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+    ];
     
-    // Dias vazios no início
-    for (let i = 0; i < firstDayOfMonth; i++) {
-        const emptyDiv = document.createElement('div');
-        emptyDiv.classList.add('calendar-day', 'empty');
-        calendarDays.appendChild(emptyDiv);
-    }
+    document.getElementById('currentMonth').textContent = `${monthNames[month]} ${year}`;
+    
+    const grid = document.getElementById('calendarGrid');
+    grid.innerHTML = '';
+    
+    const dayNames = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+    dayNames.forEach(day => {
+        const header = document.createElement('div');
+        header.className = 'calendar-day-header';
+        header.textContent = day;
+        grid.appendChild(header);
+    });
     
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     
-    const maxDate = new Date();
-    maxDate.setDate(today.getDate() + 60);
+    const maxDate = new Date(today);
+    maxDate.setDate(maxDate.getDate() + 60);
     
-    for (let day = 1; day <= lastDateOfMonth; day++) {
+    for (let i = 0; i < firstDay; i++) {
+        const empty = document.createElement('div');
+        grid.appendChild(empty);
+    }
+    
+    for (let day = 1; day <= daysInMonth; day++) {
         const date = new Date(year, month, day);
-        const dayDiv = document.createElement('div');
-        dayDiv.classList.add('calendar-day');
-        dayDiv.textContent = day;
+        const cell = document.createElement('div');
+        cell.className = 'calendar-day';
+        cell.textContent = day;
         
-        const dateString = formatDateISO(date);
+        const dayOfWeek = date.getDay();
         
-        // Verificar se é final de semana
-        if (date.getDay() === 0 || date.getDay() === 6) {
-            dayDiv.classList.add('weekend');
-        }
-        
-        // Bloquear dias passados, domingos ou muito distantes
-        if (date < today || date > maxDate || date.getDay() === 0) {
-            dayDiv.classList.add('disabled');
-            if (date.getDay() === 0) {
-                dayDiv.classList.add('sunday');
-                dayDiv.title = "Não trabalhamos aos domingos";
-            }
+        if (dayOfWeek === 0) {
+            cell.classList.add('sunday', 'disabled');
+        } else if (date < today || date > maxDate) {
+            cell.classList.add('disabled');
         } else {
-            dayDiv.addEventListener('click', () => selectDate(date));
-            
-            if (selectedDate && dateString === formatDateISO(selectedDate)) {
-                dayDiv.classList.add('selected');
-            }
-            
-            if (date.getTime() === today.getTime()) {
-                dayDiv.classList.add('today');
-            }
+            cell.addEventListener('click', () => selectDate(date, cell));
         }
         
-        calendarDays.appendChild(dayDiv);
+        if (selectedDate && date.toDateString() === selectedDate.toDateString()) {
+            cell.classList.add('selected');
+        }
+        
+        grid.appendChild(cell);
     }
 }
 
-function selectDate(date) {
-    selectedDate = date;
+function changeMonth(delta) {
+    currentDate.setMonth(currentDate.getMonth() + delta);
     renderCalendar();
-    updateAvailableTimes();
+}
+
+function selectDate(date, cell) {
+    document.querySelectorAll('.calendar-day').forEach(c => c.classList.remove('selected'));
+    cell.classList.add('selected');
+    
+    selectedDate = date;
+    selectedTime = null;
+    
+    renderTimeSlots();
     updateSummary();
 }
 
-function formatDateISO(date) {
-    return date.toISOString().split('T')[0];
-}
-
-function formatDateBR(date) {
-    const daysOfWeek = ["Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado"];
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const year = date.getFullYear();
-    const dayOfWeek = daysOfWeek[date.getDay()];
-    return `${day}/${month}/${year} - ${dayOfWeek}`;
-}
-
-prevMonthBtn.addEventListener('click', () => {
-    currentDate.setMonth(currentDate.getMonth() - 1);
-    renderCalendar();
-});
-
-nextMonthBtn.addEventListener('click', () => {
-    currentDate.setMonth(currentDate.getMonth() + 1);
-    renderCalendar();
-});
-
-// Lógica de Horários Disponíveis
-function updateAvailableTimes() {
-    bookingTimeSelect.innerHTML = '<option value="">Selecione um horário...</option>';
+function renderTimeSlots() {
+    if (!selectedDate) return;
     
-    if (!selectedDate) {
-        bookingTimeSelect.disabled = true;
-        return;
-    }
-
-    bookingTimeSelect.disabled = false;
+    const container = document.getElementById('timeSlotsContainer');
+    const grid = document.getElementById('timeGrid');
     
-    let times = [];
+    container.style.display = 'block';
+    grid.innerHTML = '';
+    
     const dayOfWeek = selectedDate.getDay();
-    const isWeekend = (dayOfWeek === 0 || dayOfWeek === 6);
+    const isSaturday = dayOfWeek === 6;
     
-    if (isWeekend) {
-        times = ['09:00', '11:00', '13:00', '15:00', '17:00', '19:00', '21:00'];
-    } else {
-        times = ['19:00', '21:00'];
-    }
-
-    // Filtrar horários passados se a data selecionada for hoje
+    let times = isSaturday ? 
+        ['09:00', '11:00', '13:00', '15:00', '17:00', '19:00', '21:00'] : 
+        ['19:00', '21:00'];
+    
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    const selectedDateObj = new Date(selectedDate);
-    selectedDateObj.setHours(0, 0, 0, 0);
-
-    if (selectedDateObj.getTime() === today.getTime()) {
-        const now = new Date();
-        const currentHour = now.getHours();
-        times = times.filter(time => {
-            const hour = parseInt(time.split(':')[0]);
-            return hour > currentHour;
-        });
+    
+    if (selectedDate.getTime() === today.getTime()) {
+        const currentHour = new Date().getHours();
+        times = times.filter(time => parseInt(time) > currentHour);
     }
-
+    
     const appointments = JSON.parse(localStorage.getItem('yas_femme_appointments') || '[]');
     const dateStr = formatDateISO(selectedDate);
     
-    let availableCount = 0;
     times.forEach(time => {
-        const isOccupied = appointments.some(app => app.date === dateStr && app.time === time);
+        const slot = document.createElement('div');
+        slot.className = 'time-slot';
+        slot.textContent = time;
         
-        const option = document.createElement('option');
-        option.value = time;
-        option.textContent = time;
+        const isOccupied = appointments.some(app => 
+            app.date === dateStr && app.time === time
+        );
         
         if (isOccupied) {
-            option.disabled = true;
-            option.textContent += ' (Ocupado)';
+            slot.classList.add('disabled');
         } else {
-            availableCount++;
+            slot.addEventListener('click', () => selectTime(time, slot));
         }
         
-        bookingTimeSelect.appendChild(option);
+        if (selectedTime === time) {
+            slot.classList.add('selected');
+        }
+        
+        grid.appendChild(slot);
     });
-
-    if (availableCount === 0) {
-        const option = document.createElement('option');
-        option.textContent = "Não há horários disponíveis para este dia";
-        option.disabled = true;
-        bookingTimeSelect.innerHTML = '';
-        bookingTimeSelect.appendChild(option);
-    }
 }
 
-// Atualizar Resumo do Agendamento
-function updateSummary() {
-    const time = bookingTimeSelect.value;
+function selectTime(time, slot) {
+    document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('selected'));
+    slot.classList.add('selected');
     
-    if (selectedDate && time) {
-        document.getElementById('summaryDate').textContent = formatDateBR(selectedDate);
-        document.getElementById('summaryTime').textContent = time;
-        summaryDiv.style.display = 'block';
-    } else if (selectedDate) {
-        document.getElementById('summaryDate').textContent = formatDateBR(selectedDate);
-        document.getElementById('summaryTime').textContent = "Selecione o horário";
-        summaryDiv.style.display = 'block';
-    } else {
-        summaryDiv.style.display = 'none';
-    }
+    selectedTime = time;
+    updateSummary();
 }
 
-bookingTimeSelect.addEventListener('change', updateSummary);
+// ==========================================
+// SISTEMA DE AGENDAMENTO
+// ==========================================
 
-// Processar Formulário de Agendamento
-bookingForm.onsubmit = function(e) {
+function openModal(serviceName, price, maintenanceType) {
+    currentService = serviceName;
+    currentPrice = price;
+    
+    document.getElementById('bookingModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+    
+    renderCalendar();
+    document.getElementById('timeSlotsContainer').style.display = 'none';
+    document.getElementById('orderSummary').style.display = 'none';
+    document.getElementById('confirmBtn').disabled = true;
+    
+    selectedDate = null;
+    selectedTime = null;
+    
+    document.getElementById('bookingForm').reset();
+}
+
+function closeModal() {
+    document.getElementById('bookingModal').classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+function updateSummary() {
+    if (!currentService || !selectedDate || !selectedTime) return;
+    
+    document.getElementById('summaryService').textContent = currentService;
+    document.getElementById('summaryPrice').textContent = `R$ ${currentPrice},00`;
+    
+    const day = String(selectedDate.getDate()).padStart(2, '0');
+    const month = String(selectedDate.getMonth() + 1).padStart(2, '0');
+    const year = selectedDate.getFullYear();
+    document.getElementById('summaryDate').textContent = `${day}/${month}/${year}`;
+    document.getElementById('summaryTime').textContent = selectedTime;
+    
+    document.getElementById('orderSummary').style.display = 'block';
+    document.getElementById('confirmBtn').disabled = false;
+}
+
+// Formulário
+document.getElementById('bookingForm').addEventListener('submit', function(e) {
     e.preventDefault();
     
     const name = document.getElementById('clientName').value;
     const phone = document.getElementById('clientPhone').value;
     const address = document.getElementById('clientAddress').value;
-    const service = document.getElementById('selectedService').value;
-    const price = document.getElementById('selectedPrice').value;
-    const time = bookingTimeSelect.value;
-
-    if (!name || !phone || !address || !selectedDate || !time) {
-        alert('Por favor, preencha todos os campos obrigatórios e selecione uma data e horário.');
-        return;
-    }
-
-    const dateStr = formatDateISO(selectedDate);
-    const dateDisplay = formatDateBR(selectedDate);
-
-    // Confirmar agendamento
-    const confirmMsg = `Confirmar agendamento para ${service} em ${dateDisplay} às ${time}?`;
-    if (!confirm(confirmMsg)) return;
-
-    // Salvar no localStorage
-    const appointments = JSON.parse(localStorage.getItem('yas_femme_appointments') || '[]');
     
-    const isOccupied = appointments.some(app => app.date === dateStr && app.time === time);
-    if (isOccupied) {
-        alert('Desculpe, este horário acabou de ser ocupado. Por favor, escolha outro.');
-        updateAvailableTimes();
+    if (!name || !phone || !address || !selectedDate || !selectedTime) {
+        alert('Por favor, preencha todos os campos obrigatórios.');
         return;
     }
-
-    const newAppointment = {
-        name, phone, address, service, price, 
-        date: dateStr, 
-        dateDisplay: dateDisplay,
-        time,
-        timestamp: new Date().toISOString()
+    
+    const appointment = {
+        name: name,
+        phone: phone,
+        address: address,
+        service: currentService,
+        price: currentPrice,
+        date: formatDateISO(selectedDate),
+        time: selectedTime,
+        bookedAt: new Date().toISOString()
     };
     
-    appointments.push(newAppointment);
+    const appointments = JSON.parse(localStorage.getItem('yas_femme_appointments') || '[]');
+    appointments.push(appointment);
     localStorage.setItem('yas_femme_appointments', JSON.stringify(appointments));
-
-    // Gerar mensagem para WhatsApp
-    const message = `Olá! Gostaria de confirmar meu agendamento no Yas Femme Studio:
-
-👤 Nome: ${name}
-📱 Telefone: ${phone}
-📍 Endereço: ${address}
-
-💅 Serviço: ${service}
-💰 Valor: R$ ${price}
-📅 Data: ${dateDisplay}
-⏰ Horário: ${time}
-
-Aguardo confirmação!`;
-
-    const encodedMessage = encodeURIComponent(message);
-    const whatsappUrl = `https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${encodedMessage}`;
-
-    // Redirecionar para WhatsApp
-    window.open(whatsappUrl, '_blank');
     
-    alert('Agendamento realizado com sucesso! Você será redirecionado para o WhatsApp para confirmação final.');
-    closeBookingModal();
-};
+    const message = `Olá! Gostaria de confirmar meu agendamento no Yas Femme Studio:\n\n` +
+                   `👤 Nome: ${name}\n` +
+                   `📱 Telefone: ${phone}\n` +
+                   `📍 Endereço: ${address}\n\n` +
+                   `💅 Serviço: ${currentService}\n` +
+                   `💰 Valor: R$ ${currentPrice},00\n` +
+                   `📅 Data: ${formatRelativeDate(selectedDate)} (${String(selectedDate.getDate()).padStart(2, '0')}/${String(selectedDate.getMonth() + 1).padStart(2, '0')}/${selectedDate.getFullYear()})\n` +
+                   `⏰ Horário: ${selectedTime}\n\n` +
+                   `Aguardo confirmação!`;
+    
+    const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+    
+    closeModal();
+    
+    setTimeout(() => {
+        window.open(whatsappUrl, '_blank');
+    }, 500);
+    
+    alert('Agendamento registrado! Você será redirecionado para o WhatsApp para confirmar.');
+    
+    updateUrgencyIndicators();
+});
+
+// Fechar modal ao clicar fora
+document.getElementById('bookingModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeModal();
+    }
+});
