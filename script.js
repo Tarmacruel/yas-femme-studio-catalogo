@@ -801,3 +801,220 @@ function showWaitlistPanel() {
     console.log('\n' + '='.repeat(50));
     console.log(`Total: ${waitlist.length} pessoa(s) na lista`);
 }
+// ==========================================
+// CALCULADORA DE MANUTENÇÃO
+// ==========================================
+
+// Configurações de Manutenção por Serviço
+const MAINTENANCE_CONFIG = {
+    'lash-lifting': { days: null, label: 'Sem manutenção', type: 'none' },
+    'fio-a-fio': { days: null, label: 'Sem manutenção', type: 'none' },
+    'volume-brasileiro': { days: { min: 15, max: 20 }, label: '15-20 dias', type: 'maintenance' },
+    'volume-egipcio': { days: { min: 15, max: 20 }, label: '15-20 dias', type: 'maintenance' },
+    'anime': { days: null, label: 'Sem manutenção', type: 'none' }
+};
+
+// Formatar data para exibição (DD/MM/YYYY)
+function formatDateBR(dateString) {
+    if (!dateString) return '-';
+    const date = new Date(dateString + 'T00:00:00');
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+}
+
+// Calcular diferença em dias
+function daysDifference(date1, date2) {
+    const oneDay = 24 * 60 * 60 * 1000;
+    const d1 = new Date(date1 + 'T00:00:00');
+    const d2 = new Date(date2 + 'T00:00:00');
+    return Math.round((d2 - d1) / oneDay);
+}
+
+// Calcular Manutenção
+document.getElementById('maintenanceForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const service = document.getElementById('maintenanceService').value;
+    const applicationDate = document.getElementById('maintenanceDate').value;
+    
+    if (!service || !applicationDate) {
+        alert('Por favor, selecione o serviço e a data da aplicação.');
+        return;
+    }
+    
+    const config = MAINTENANCE_CONFIG[service];
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    const appDate = new Date(applicationDate + 'T00:00:00');
+    const daysSinceApplication = daysDifference(applicationDate, today);
+    
+    // Atualizar dados no resultado
+    document.getElementById('resultApplicationDate').textContent = formatDateBR(applicationDate);
+    document.getElementById('resultMaintenancePeriod').textContent = config.label;
+    
+    const resultHeader = document.getElementById('resultHeader');
+    const statusIndicator = document.getElementById('statusIndicator');
+    const resultTitle = document.getElementById('resultTitle');
+    const resultIdealWindow = document.getElementById('resultIdealWindow');
+    const resultStatus = document.getElementById('resultStatus');
+    const resultDaysLeft = document.getElementById('resultDaysLeft');
+    const btnWhatsapp = document.getElementById('btnWhatsappReminder');
+    
+    // Remover classes anteriores
+    statusIndicator.className = 'status-indicator';
+    resultStatus.className = 'result-value status-text';
+    
+    if (config.type === 'none') {
+        // Técnica sem manutenção
+        resultHeader.style.background = 'linear-gradient(135deg, #2196F3 0%, #1976D2 100%)';
+        statusIndicator.classList.add('blue');
+        statusIndicator.textContent = '✨';
+        resultTitle.textContent = 'Técnica sem manutenção';
+        resultIdealWindow.textContent = 'Aproveite até cair naturalmente';
+        resultStatus.textContent = 'Sem prazo definido';
+        resultStatus.classList.add('blue');
+        resultDaysLeft.textContent = '∞';
+        
+        btnWhatsapp.href = generateWhatsappLink(service, config.label, 'sem-manutencao');
+    } else {
+        // Técnica com manutenção
+        const idealStart = new Date(appDate);
+        idealStart.setDate(idealStart.getDate() + config.days.min);
+        
+        const idealEnd = new Date(appDate);
+        idealEnd.setDate(idealEnd.getDate() + config.days.max);
+        
+        resultIdealWindow.textContent = `${formatDateBR(idealStart.toISOString().split('T')[0])} até ${formatDateBR(idealEnd.toISOString().split('T')[0])}`;
+        
+        // Determinar status
+        let status, statusClass, headerGradient, icon, daysText;
+        
+        if (daysSinceApplication < config.days.min) {
+            // Ainda não é hora
+            const daysUntilIdeal = config.days.min - daysSinceApplication;
+            status = 'No prazo';
+            statusClass = 'green';
+            headerGradient = 'linear-gradient(135deg, #4CAF50 0%, #45a049 100%)';
+            icon = '✅';
+            daysText = `${daysUntilIdeal} dias para o período ideal`;
+        } else if (daysSinceApplication <= config.days.max) {
+            // Período ideal
+            const daysUntilEnd = config.days.max - daysSinceApplication;
+            status = 'Período Ideal!';
+            statusClass = 'yellow';
+            headerGradient = 'linear-gradient(135deg, #FFC107 0%, #FFB300 100%)';
+            icon = '🎯';
+            daysText = `${daysUntilEnd} dias restantes do período ideal`;
+        } else {
+            // Passou do prazo
+            const daysOverdue = daysSinceApplication - config.days.max;
+            status = 'Atrasado';
+            statusClass = 'red';
+            headerGradient = 'linear-gradient(135deg, #f44336 0%, #d32f2f 100%)';
+            icon = '⚠️';
+            daysText = `${daysOverdue} dias atrasado`;
+        }
+        
+        resultHeader.style.background = headerGradient;
+        statusIndicator.classList.add(statusClass);
+        statusIndicator.textContent = icon;
+        resultTitle.textContent = status;
+        resultStatus.textContent = status;
+        resultStatus.classList.add(statusClass);
+        resultDaysLeft.textContent = daysText;
+        
+        btnWhatsapp.href = generateWhatsappLink(service, config.label, status);
+    }
+    
+    // Mostrar resultado com animação
+    document.getElementById('maintenanceResult').style.display = 'block';
+    document.getElementById('maintenanceResult').scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
+
+// Gerar Link do WhatsApp
+function generateWhatsappLink(service, maintenancePeriod, status) {
+    const message = `Olá! 👋\n\nGostaria de agendar minha manutenção de cílios.\n\n` +
+                   `💅 *Serviço:* ${getServiceName(service)}\n` +
+                   `⏰ *Manutenção:* ${maintenancePeriod}\n` +
+                   `📊 *Status:* ${status}\n\n` +
+                   `Aguardo disponibilidade de horários!`;
+    
+    return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+}
+
+// Obter Nome do Serviço
+function getServiceName(serviceKey) {
+    const names = {
+        'lash-lifting': 'Lash Lifting',
+        'fio-a-fio': 'Fio a Fio',
+        'volume-brasileiro': 'Volume Brasileiro',
+        'volume-egipcio': 'Volume Egípcio',
+        'anime': 'Anime'
+    };
+    return names[serviceKey] || serviceKey;
+}
+
+// Salvar Lembrete
+function saveReminder() {
+    const service = document.getElementById('maintenanceService').value;
+    const applicationDate = document.getElementById('maintenanceDate').value;
+    
+    if (!service || !applicationDate) {
+        alert('Por favor, preencha os dados primeiro.');
+        return;
+    }
+    
+    const config = MAINTENANCE_CONFIG[service];
+    const reminder = {
+        id: Date.now(),
+        service: getServiceName(service),
+        applicationDate: applicationDate,
+        maintenancePeriod: config.label,
+        savedAt: new Date().toISOString()
+    };
+    
+    // Salvar no localStorage
+    const reminders = JSON.parse(localStorage.getItem('yas_femme_reminders') || '[]');
+    reminders.push(reminder);
+    localStorage.setItem('yas_femme_reminders', JSON.stringify(reminders));
+    
+    // Feedback visual
+    alert('✅ Lembrete salvo com sucesso!\n\nVocê pode consultar seus lembretes salvos no seu navegador.');
+}
+
+// Função para ver lembretes salvos (console)
+function showSavedReminders() {
+    const reminders = JSON.parse(localStorage.getItem('yas_femme_reminders') || '[]');
+    
+    if (reminders.length === 0) {
+        console.log('📅 Nenhum lembrete salvo');
+        return;
+    }
+    
+    console.log('📅 LEMBRETES SALVOS - Yas Femme Studio');
+    console.log('='.repeat(50));
+    
+    reminders.forEach((reminder, index) => {
+        console.log(`\n#${index + 1} - ${reminder.service}`);
+        console.log(`   📅 Aplicação: ${formatDateBR(reminder.applicationDate)}`);
+        console.log(`   ⏰ Manutenção: ${reminder.maintenancePeriod}`);
+        console.log(`   💾 Salvo em: ${new Date(reminder.savedAt).toLocaleString('pt-BR')}`);
+    });
+    
+    console.log('\n' + '='.repeat(50));
+    console.log(`Total: ${reminders.length} lembrete(s)`);
+}
+
+// Adicionar ao DOMContentLoaded
+const originalDOMContentLoaded = document.addEventListener;
+document.addEventListener('DOMContentLoaded', function() {
+    // Configurar data mínima no input de data
+    const dateInput = document.getElementById('maintenanceDate');
+    if (dateInput) {
+        const today = new Date().toISOString().split('T')[0];
+        dateInput.setAttribute('max', today);
+    }
+});
