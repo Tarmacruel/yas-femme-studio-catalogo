@@ -381,6 +381,140 @@
         </div>
     </div>
 </section>
+<!-- Calculadora de Manutenção -->
+<section id="manutencao" class="maintenance-section">
+    <div class="container">
+        <h2 class="section-title">Calculadora de Manutenção</h2>
+        <p class="section-subtitle">Saiba quando é o momento ideal para sua próxima sessão</p>
+        
+        <div class="maintenance-container">
+            <!-- Formulário da Calculadora -->
+            <div class="maintenance-calculator">
+                <div class="maintenance-card">
+                    <div class="maintenance-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/>
+                        </svg>
+                    </div>
+                    
+                    <h3>Quando você fez sua aplicação?</h3>
+                    
+                    <form id="maintenanceForm">
+                        <div class="form-group">
+                            <label for="maintenanceService">Serviço Realizado *</label>
+                            <select id="maintenanceService" name="service" required>
+                                <option value="">Selecione o serviço...</option>
+                                <option value="lash-lifting" data-maintenance="none">Lash Lifting (Sem manutenção)</option>
+                                <option value="fio-a-fio" data-maintenance="none">Fio a Fio (Sem manutenção)</option>
+                                <option value="volume-brasileiro" data-maintenance="15-20">Volume Brasileiro (15-20 dias)</option>
+                                <option value="volume-egipcio" data-maintenance="15-20">Volume Egípcio (15-20 dias)</option>
+                                <option value="anime" data-maintenance="none">Anime (Sem manutenção)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="maintenanceDate">Data da Aplicação *</label>
+                            <input type="date" id="maintenanceDate" name="date" required>
+                        </div>
+                        
+                        <button type="submit" class="btn-calculate">
+                            <svg viewBox="0 0 24 24" class="btn-icon-small">
+                                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                            </svg>
+                            <span>Calcular Período Ideal</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Resultado da Calculadora -->
+            <div class="maintenance-result" id="maintenanceResult" style="display: none;">
+                <div class="result-card">
+                    <div class="result-header" id="resultHeader">
+                        <div class="status-indicator" id="statusIndicator"></div>
+                        <h3 id="resultTitle">Seu período ideal</h3>
+                    </div>
+                    
+                    <div class="result-content">
+                        <div class="result-item">
+                            <span class="result-label">📅 Data da aplicação:</span>
+                            <span class="result-value" id="resultApplicationDate">-</span>
+                        </div>
+                        
+                        <div class="result-item">
+                            <span class="result-label">⏰ Período de manutenção:</span>
+                            <span class="result-value" id="resultMaintenancePeriod">-</span>
+                        </div>
+                        
+                        <div class="result-item highlight">
+                            <span class="result-label">🎯 Volta ideal entre:</span>
+                            <span class="result-value" id="resultIdealWindow">-</span>
+                        </div>
+                        
+                        <div class="result-item">
+                            <span class="result-label">📍 Status atual:</span>
+                            <span class="result-value status-text" id="resultStatus">-</span>
+                        </div>
+                        
+                        <div class="result-item">
+                            <span class="result-label">⚠️ Dias restantes:</span>
+                            <span class="result-value" id="resultDaysLeft">-</span>
+                        </div>
+                    </div>
+                    
+                    <div class="result-actions">
+                        <a href="#" class="btn-whatsapp-reminder" id="btnWhatsappReminder" target="_blank">
+                            <svg viewBox="0 0 24 24" class="btn-icon-small">
+                                <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01C17.18 3.03 14.69 2 12.04 2z"/>
+                            </svg>
+                            <span>Agendar Manutenção</span>
+                        </a>
+                        
+                        <button class="btn-save-reminder" onclick="saveReminder()">
+                            <svg viewBox="0 0 24 24" class="btn-icon-small">
+                                <path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/>
+                            </svg>
+                            <span>Salvar Lembrete</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Informações Educativas -->
+            <div class="maintenance-info">
+                <div class="info-card">
+                    <div class="info-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+                        </svg>
+                    </div>
+                    <h4>Por que fazer manutenção?</h4>
+                    <p>A manutenção regular mantém seus cílios sempre cheios e bonitos, além de prevenir falhas e garantir a saúde dos seus cílios naturais.</p>
+                </div>
+                
+                <div class="info-card">
+                    <div class="info-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+                        </svg>
+                    </div>
+                    <h4>Quando agendar?</h4>
+                    <p>Para técnicas com manutenção, agende entre 15-20 dias após a aplicação. Para técnicas sem manutenção, aproveite até os cílios caírem naturalmente.</p>
+                </div>
+                
+                <div class="info-card">
+                    <div class="info-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/>
+                        </svg>
+                    </div>
+                    <h4>Cuidados entre sessões</h4>
+                    <p>Evite óleo nos cílios, não esfregue os olhos, durma de lado ou de barriga para cima, e escove os cílios diariamente.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
     
     <!-- Footer Premium -->
     <footer>
