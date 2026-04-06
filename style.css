@@ -2226,3 +2226,400 @@ footer::before {
         gap: 3px;
     }
 }
+/* ==========================================
+   CALCULADORA DE MANUTENÇÃO - PREMIUM
+   ========================================== */
+
+.maintenance-section {
+    padding: 100px 20px;
+    background: linear-gradient(135deg, #f8f8f8 0%, #f0f0f0 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.maintenance-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--rosa) 0%, var(--dourado) 100%);
+}
+
+.maintenance-container {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.maintenance-calculator {
+    margin-bottom: 40px;
+}
+
+.maintenance-card {
+    background: var(--branco);
+    padding: 40px;
+    border-radius: 24px;
+    box-shadow: 0 10px 40px var(--sombra);
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.maintenance-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 25px;
+    background: linear-gradient(135deg, var(--rosa) 0%, var(--rosa-escuro) 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 30px rgba(255, 182, 193, 0.4);
+}
+
+.maintenance-icon svg {
+    width: 40px;
+    height: 40px;
+    fill: var(--branco);
+}
+
+.maintenance-card h3 {
+    color: var(--preto);
+    margin-bottom: 30px;
+    font-size: 1.4rem;
+}
+
+#maintenanceForm .form-group {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+#maintenanceForm select,
+#maintenanceForm input[type="date"] {
+    width: 100%;
+    padding: 14px 18px;
+    border: 2px solid var(--cinza);
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    font-family: 'Poppins', sans-serif;
+    background: var(--branco);
+}
+
+#maintenanceForm select:focus,
+#maintenanceForm input[type="date"]:focus {
+    outline: none;
+    border-color: var(--rosa);
+    box-shadow: 0 0 0 4px rgba(255, 182, 193, 0.2);
+}
+
+.btn-calculate {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 16px 35px;
+    background: linear-gradient(135deg, var(--preto) 0%, var(--preto-claro) 100%);
+    color: var(--branco);
+    border: none;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+    margin-top: 10px;
+    width: 100%;
+}
+
+.btn-calculate:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(135deg, var(--rosa) 0%, var(--rosa-escuro) 100%);
+}
+
+/* Resultado */
+.maintenance-result {
+    margin-top: 40px;
+    animation: slideUp 0.5s ease;
+}
+
+.result-card {
+    background: var(--branco);
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px var(--sombra);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.result-header {
+    padding: 30px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.result-header h3 {
+    color: var(--branco);
+    margin: 0;
+    font-size: 1.4rem;
+}
+
+.status-indicator {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    flex-shrink: 0;
+}
+
+.status-indicator.green {
+    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+}
+
+.status-indicator.yellow {
+    background: linear-gradient(135deg, #FFC107 0%, #FFB300 100%);
+}
+
+.status-indicator.red {
+    background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+}
+
+.status-indicator.blue {
+    background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+}
+
+.result-content {
+    padding: 30px;
+}
+
+.result-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 0;
+    border-bottom: 1px solid var(--cinza);
+    font-size: 0.95rem;
+}
+
+.result-item:last-child {
+    border-bottom: none;
+}
+
+.result-item.highlight {
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 193, 7, 0.05) 100%);
+    padding: 20px;
+    border-radius: 12px;
+    margin: 15px 0;
+    border-left: 4px solid var(--dourado);
+}
+
+.result-label {
+    color: #666;
+    font-weight: 500;
+}
+
+.result-value {
+    color: var(--preto);
+    font-weight: 600;
+    text-align: right;
+}
+
+.status-text {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+}
+
+.status-text.green {
+    background: rgba(76, 175, 80, 0.1);
+    color: #4CAF50;
+}
+
+.status-text.yellow {
+    background: rgba(255, 193, 7, 0.1);
+    color: #FFC107;
+}
+
+.status-text.red {
+    background: rgba(244, 67, 54, 0.1);
+    color: #f44336;
+}
+
+.status-text.blue {
+    background: rgba(33, 150, 243, 0.1);
+    color: #2196F3;
+}
+
+.result-actions {
+    padding: 25px 30px;
+    background: var(--cinza-claro);
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.btn-whatsapp-reminder,
+.btn-save-reminder {
+    flex: 1;
+    min-width: 200px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px 25px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    border: none;
+}
+
+.btn-whatsapp-reminder {
+    background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+    color: var(--branco);
+    box-shadow: 0 6px 25px rgba(37, 211, 102, 0.4);
+}
+
+.btn-whatsapp-reminder:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 35px rgba(37, 211, 102, 0.6);
+}
+
+.btn-save-reminder {
+    background: linear-gradient(135deg, var(--rosa) 0%, var(--rosa-escuro) 100%);
+    color: var(--branco);
+    box-shadow: 0 6px 25px rgba(255, 182, 193, 0.4);
+}
+
+.btn-save-reminder:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 35px rgba(255, 182, 193, 0.6);
+}
+
+/* Informações Educativas */
+.maintenance-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+    margin-top: 60px;
+}
+
+.info-card {
+    background: var(--branco);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 8px 30px var(--sombra);
+    transition: all 0.4s ease;
+    text-align: center;
+}
+
+.info-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px var(--sombra-forte);
+}
+
+.info-icon {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 20px;
+    background: linear-gradient(135deg, var(--dourado) 0%, var(--dourado-claro) 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+}
+
+.info-icon svg {
+    width: 30px;
+    height: 30px;
+    fill: var(--preto);
+}
+
+.info-card h4 {
+    color: var(--preto);
+    margin-bottom: 12px;
+    font-size: 1.1rem;
+}
+
+.info-card p {
+    color: #666;
+    line-height: 1.6;
+    font-size: 0.9rem;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .maintenance-section {
+        padding: 60px 15px;
+    }
+    
+    .maintenance-card {
+        padding: 30px 20px;
+    }
+    
+    .result-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .result-content {
+        padding: 20px;
+    }
+    
+    .result-item {
+        flex-direction: column;
+        gap: 5px;
+        text-align: center;
+    }
+    
+    .result-value {
+        text-align: center;
+    }
+    
+    .result-actions {
+        flex-direction: column;
+        padding: 20px;
+    }
+    
+    .btn-whatsapp-reminder,
+    .btn-save-reminder {
+        width: 100%;
+    }
+    
+    .maintenance-info {
+        grid-template-columns: 1fr;
+        margin-top: 40px;
+    }
+}
+
+@media (max-width: 480px) {
+    .maintenance-icon,
+    .info-icon {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .maintenance-icon svg,
+    .info-icon svg {
+        width: 25px;
+        height: 25px;
+    }
+    
+    .maintenance-card h3 {
+        font-size: 1.2rem;
+    }
+    
+    .status-indicator {
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
+    }
+}
