@@ -802,7 +802,7 @@ function showWaitlistPanel() {
     console.log(`Total: ${waitlist.length} pessoa(s) na lista`);
 }
 // ==========================================
-// CALCULADORA DE MANUTENÇÃO
+// CALCULADORA DE MANUTENÇÃO - CORIGIDO
 // ==========================================
 
 // Configurações de Manutenção por Serviço
@@ -832,16 +832,39 @@ function daysDifference(date1, date2) {
     return Math.round((d2 - d1) / oneDay);
 }
 
-// Calcular Manutenção
-document.getElementById('maintenanceForm').addEventListener('submit', function(e) {
-    e.preventDefault();
+// Obter Nome do Serviço
+function getServiceName(serviceKey) {
+    const names = {
+        'lash-lifting': 'Lash Lifting',
+        'fio-a-fio': 'Fio a Fio',
+        'volume-brasileiro': 'Volume Brasileiro',
+        'volume-egipcio': 'Volume Egípcio',
+        'anime': 'Anime'
+    };
+    return names[serviceKey] || serviceKey;
+}
+
+// Gerar Link do WhatsApp
+function generateWhatsappLink(service, maintenancePeriod, status) {
+    const message = `Olá! 👋\n\nGostaria de agendar minha manutenção de cílios.\n\n` +
+                   `💅 *Serviço:* ${getServiceName(service)}\n` +
+                   `⏰ *Manutenção:* ${maintenancePeriod}\n` +
+                   `📊 *Status:* ${status}\n\n` +
+                   `Aguardo disponibilidade de horários!`;
+    
+    return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+}
+
+// Calcular Manutenção - FUNÇÃO PRINCIPAL
+function calculateMaintenance(e) {
+    e.preventDefault(); // IMPEDIR RECARGA DA PÁGINA
     
     const service = document.getElementById('maintenanceService').value;
     const applicationDate = document.getElementById('maintenanceDate').value;
     
     if (!service || !applicationDate) {
         alert('Por favor, selecione o serviço e a data da aplicação.');
-        return;
+        return false;
     }
     
     const config = MAINTENANCE_CONFIG[service];
@@ -893,7 +916,6 @@ document.getElementById('maintenanceForm').addEventListener('submit', function(e
         let status, statusClass, headerGradient, icon, daysText;
         
         if (daysSinceApplication < config.days.min) {
-            // Ainda não é hora
             const daysUntilIdeal = config.days.min - daysSinceApplication;
             status = 'No prazo';
             statusClass = 'green';
@@ -901,7 +923,6 @@ document.getElementById('maintenanceForm').addEventListener('submit', function(e
             icon = '✅';
             daysText = `${daysUntilIdeal} dias para o período ideal`;
         } else if (daysSinceApplication <= config.days.max) {
-            // Período ideal
             const daysUntilEnd = config.days.max - daysSinceApplication;
             status = 'Período Ideal!';
             statusClass = 'yellow';
@@ -909,7 +930,6 @@ document.getElementById('maintenanceForm').addEventListener('submit', function(e
             icon = '🎯';
             daysText = `${daysUntilEnd} dias restantes do período ideal`;
         } else {
-            // Passou do prazo
             const daysOverdue = daysSinceApplication - config.days.max;
             status = 'Atrasado';
             statusClass = 'red';
@@ -930,31 +950,15 @@ document.getElementById('maintenanceForm').addEventListener('submit', function(e
     }
     
     // Mostrar resultado com animação
-    document.getElementById('maintenanceResult').style.display = 'block';
-    document.getElementById('maintenanceResult').scrollIntoView({ behavior: 'smooth', block: 'start' });
-});
-
-// Gerar Link do WhatsApp
-function generateWhatsappLink(service, maintenancePeriod, status) {
-    const message = `Olá! 👋\n\nGostaria de agendar minha manutenção de cílios.\n\n` +
-                   `💅 *Serviço:* ${getServiceName(service)}\n` +
-                   `⏰ *Manutenção:* ${maintenancePeriod}\n` +
-                   `📊 *Status:* ${status}\n\n` +
-                   `Aguardo disponibilidade de horários!`;
+    const resultDiv = document.getElementById('maintenanceResult');
+    resultDiv.style.display = 'block';
     
-    return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
-}
-
-// Obter Nome do Serviço
-function getServiceName(serviceKey) {
-    const names = {
-        'lash-lifting': 'Lash Lifting',
-        'fio-a-fio': 'Fio a Fio',
-        'volume-brasileiro': 'Volume Brasileiro',
-        'volume-egipcio': 'Volume Egípcio',
-        'anime': 'Anime'
-    };
-    return names[serviceKey] || serviceKey;
+    // Scroll suave até o resultado
+    setTimeout(() => {
+        resultDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
+    
+    return false;
 }
 
 // Salvar Lembrete
@@ -981,7 +985,6 @@ function saveReminder() {
     reminders.push(reminder);
     localStorage.setItem('yas_femme_reminders', JSON.stringify(reminders));
     
-    // Feedback visual
     alert('✅ Lembrete salvo com sucesso!\n\nVocê pode consultar seus lembretes salvos no seu navegador.');
 }
 
@@ -1008,13 +1011,20 @@ function showSavedReminders() {
     console.log(`Total: ${reminders.length} lembrete(s)`);
 }
 
-// Adicionar ao DOMContentLoaded
-const originalDOMContentLoaded = document.addEventListener;
+// INICIALIZAÇÃO - GARANTIR QUE O DOM ESTÁ CARREGADO
 document.addEventListener('DOMContentLoaded', function() {
-    // Configurar data mínima no input de data
+    // Configurar data máxima no input de data (não permitir datas futuras)
     const dateInput = document.getElementById('maintenanceDate');
     if (dateInput) {
         const today = new Date().toISOString().split('T')[0];
         dateInput.setAttribute('max', today);
     }
+    
+    // ADICIONAR EVENT LISTENER NO FORMULÁRIO
+    const maintenanceForm = document.getElementById('maintenanceForm');
+    if (maintenanceForm) {
+        maintenanceForm.addEventListener('submit', calculateMaintenance);
+    }
+    
+    console.log('✅ Calculadora de Manutenção inicializada');
 });
