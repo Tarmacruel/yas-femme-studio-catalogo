@@ -447,7 +447,8 @@ function calculateMaintenance(e) {
     
     const config = MAINTENANCE_CONFIG[service];
     const today = new Date(); today.setHours(0,0,0,0);
-    const daysSince = daysDifference(appDate, today);
+    const todayStr = formatDateISO(today);
+    const daysSince = daysDifference(appDate, todayStr);
     
     document.getElementById('resultApplicationDate').textContent = formatDateBR(appDate);
     document.getElementById('resultMaintenancePeriod').textContent = config.label;
