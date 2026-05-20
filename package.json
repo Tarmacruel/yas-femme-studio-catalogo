@@ -1,0 +1,17 @@
+{
+  "name": "yas-femme-studio-local",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Catalogo local com agenda real para Yas Femme Studio.",
+  "scripts": {
+    "start": "node --no-warnings src/server.js",
+    "dev": "node --no-warnings --watch src/server.js",
+    "test": "node --no-warnings --test",
+    "start:local": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/ops/start-local.ps1",
+    "stop:local": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/ops/stop-local.ps1",
+    "status:local": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/ops/status-local.ps1"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

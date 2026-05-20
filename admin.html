@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Yas Femme Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body class="admin-body">
+  <main class="admin-shell">
+    <section class="login-panel" id="loginPanel">
+      <p class="eyebrow">Yas Femme Studio</p>
+      <h1>Painel admin</h1>
+      <p>Entre com a senha local para gerenciar agenda, catálogo, publicações e parâmetros do site.</p>
+      <form id="loginForm">
+        <input type="text" name="username" value="admin" autocomplete="username" hidden>
+        <label>
+          Senha
+          <input type="password" id="adminPassword" autocomplete="current-password" required>
+        </label>
+        <p class="form-error" id="loginError"></p>
+        <button class="button button-primary button-full" type="submit">Entrar</button>
+      </form>
+    </section>
+
+    <section class="admin-dashboard" id="adminDashboard" hidden>
+      <header class="admin-topbar">
+        <div>
+          <p class="eyebrow">Central de parâmetros</p>
+          <h1>Yas Femme Studio</h1>
+        </div>
+        <div class="admin-actions">
+          <a class="button button-soft" href="/">Ver site</a>
+          <button class="button button-dark" id="refreshButton" type="button">Atualizar</button>
+          <button class="button button-soft" id="logoutButton" type="button">Sair</button>
+        </div>
+      </header>
+
+      <nav class="admin-tabs" aria-label="Áreas do painel">
+        <button class="admin-tab active" type="button" data-admin-tab="agenda">Agenda</button>
+        <button class="admin-tab" type="button" data-admin-tab="catalog">Catálogo</button>
+        <button class="admin-tab" type="button" data-admin-tab="posts">Publicações</button>
+        <button class="admin-tab" type="button" data-admin-tab="hours">Horários</button>
+        <button class="admin-tab" type="button" data-admin-tab="contacts">Contatos</button>
+        <button class="admin-tab" type="button" data-admin-tab="payments">Pagamentos</button>
+        <button class="admin-tab" type="button" data-admin-tab="site">Site</button>
+      </nav>
+
+      <p class="admin-notice" id="adminNotice" role="status"></p>
+
+      <section data-admin-tab-panel="agenda">
+        <section class="admin-section agenda-calendar-section">
+          <div class="admin-section-heading agenda-heading">
+            <div>
+              <h2>Calendário da agenda</h2>
+              <p class="admin-section-subtitle">Visualize reservas, horários ocupados e disponibilidade por semana ou mês.</p>
+            </div>
+            <div class="agenda-toolbar">
+              <div class="segmented-control" aria-label="Modo de visualização da agenda">
+                <button class="segment-button active" id="agendaMonthView" type="button" data-agenda-view="month">Mensal</button>
+                <button class="segment-button" id="agendaWeekView" type="button" data-agenda-view="week">Semanal</button>
+              </div>
+              <div class="agenda-nav">
+                <button class="button button-soft" id="agendaPrev" type="button">Anterior</button>
+                <button class="button button-dark" id="agendaToday" type="button">Hoje</button>
+                <button class="button button-soft" id="agendaNext" type="button">Próximo</button>
+              </div>
+            </div>
+          </div>
+          <div class="agenda-summary">
+            <strong id="agendaRangeLabel">Carregando...</strong>
+            <span id="agendaStatsText"></span>
+            <div class="agenda-legend" aria-label="Legenda da agenda">
+              <span><i class="legend-dot pending"></i>Pendente</span>
+              <span><i class="legend-dot confirmed"></i>Confirmada</span>
+              <span><i class="legend-dot available"></i>Livre</span>
+            </div>
+          </div>
+          <div class="agenda-calendar" id="agendaCalendar" aria-live="polite"></div>
+          <div class="agenda-day-details" id="agendaDayDetails"></div>
+        </section>
+
+        <section class="admin-section">
+          <div class="admin-section-heading">
+            <h2>Reservas</h2>
+            <select id="bookingStatusFilter" aria-label="Filtrar reservas por status">
+              <option value="">Todos os status</option>
+              <option value="pending">Pendentes</option>
+              <option value="confirmed">Confirmadas</option>
+              <option value="cancelled">Canceladas</option>
+            </select>
+          </div>
+          <div class="admin-list" id="bookingsList"></div>
+        </section>
+
+        <section class="admin-section">
+          <div class="admin-section-heading">
+            <h2>Lista de espera</h2>
+            <select id="waitlistStatusFilter" aria-label="Filtrar lista de espera por status">
+              <option value="">Todos os status</option>
+              <option value="new">Novas</option>
+              <option value="contacted">Contatadas</option>
+              <option value="closed">Encerradas</option>
+            </select>
+          </div>
+          <div class="admin-list" id="waitlistList"></div>
+        </section>
+      </section>
+
+      <section data-admin-tab-panel="catalog" hidden>
+        <div class="admin-layout">
+          <section class="admin-section">
+            <div class="admin-section-heading">
+              <h2>Serviço</h2>
+              <button class="button button-soft" id="resetServiceForm" type="button">Novo</button>
+            </div>
+            <form class="admin-form" id="serviceForm">
+              <input type="hidden" id="serviceId">
+              <label>
+                Nome
+                <input id="serviceName" required>
+              </label>
+              <label>
+                Imagem atual ou caminho
+                <input id="serviceImage" placeholder="assets/fox.png ou /uploads/imagem.png">
+              </label>
+              <label>
+                Enviar nova imagem
+                <input id="serviceImageFile" type="file" accept="image/png,image/jpeg,image/webp">
+              </label>
+              <div class="form-grid">
+                <label>
+                  Aplicação (R$)
+                  <input id="serviceApplicationPrice" type="number" min="0" step="1" required>
+                </label>
+                <label>
+                  Manutenção (R$)
+                  <input id="serviceMaintenancePrice" type="number" min="0" step="1">
+                </label>
+              </div>
+              <label>
+                Texto de preço
+                <input id="servicePriceText" placeholder="Aplicação R$ 145 | Manutenção R$ 130">
+              </label>
+              <label>
+                Rótulo de manutenção
+                <input id="serviceMaintenanceLabel" placeholder="Manutenção R$ 130">
+              </label>
+              <label>
+                Descrição
+                <textarea id="serviceDescription" rows="3"></textarea>
+              </label>
+              <div class="form-grid">
+                <label>
+                  Duração (min)
+                  <input id="serviceDuration" type="number" min="15" step="15" value="120">
+                </label>
+                <label>
+                  Ordem
+                  <input id="serviceSortOrder" type="number" step="1" value="100">
+                </label>
+              </div>
+              <div class="admin-check-row">
+                <label><input id="serviceFeatured" type="checkbox"> Destaque</label>
+                <label><input id="serviceActive" type="checkbox" checked> Ativo no site</label>
+              </div>
+              <button class="button button-primary button-full" type="submit">Salvar serviço</button>
+            </form>
+          </section>
+
+          <section class="admin-section">
+            <div class="admin-section-heading">
+              <h2>Catálogo</h2>
+            </div>
+            <div class="admin-list compact" id="servicesList"></div>
+          </section>
+        </div>
+      </section>
+
+      <section data-admin-tab-panel="posts" hidden>
+        <div class="admin-layout">
+          <section class="admin-section">
+            <div class="admin-section-heading">
+              <h2>Publicação</h2>
+              <button class="button button-soft" id="resetPostForm" type="button">Nova</button>
+            </div>
+            <form class="admin-form" id="postForm">
+              <input type="hidden" id="postId">
+              <label>
+                Título
+                <input id="postTitle" required>
+              </label>
+              <label>
+                Texto
+                <textarea id="postBody" rows="4" required></textarea>
+              </label>
+              <label>
+                Imagem atual ou caminho
+                <input id="postImage" placeholder="/uploads/promo.png">
+              </label>
+              <label>
+                Enviar nova imagem
+                <input id="postImageFile" type="file" accept="image/png,image/jpeg,image/webp">
+              </label>
+              <div class="form-grid">
+                <label>
+                  CTA
+                  <input id="postCtaLabel" placeholder="Agendar agora">
+                </label>
+                <label>
+                  Link do CTA
+                  <input id="postCtaUrl" placeholder="https://...">
+                </label>
+              </div>
+              <label>
+                Ordem
+                <input id="postSortOrder" type="number" step="1" value="100">
+              </label>
+              <div class="admin-check-row">
+                <label><input id="postFeatured" type="checkbox"> Destaque</label>
+                <label><input id="postActive" type="checkbox" checked> Ativa no site</label>
+              </div>
+              <button class="button button-primary button-full" type="submit">Salvar publicação</button>
+            </form>
+          </section>
+
+          <section class="admin-section">
+            <div class="admin-section-heading">
+              <h2>Feed</h2>
+            </div>
+            <div class="admin-list compact" id="postsList"></div>
+          </section>
+        </div>
+      </section>
+
+      <section data-admin-tab-panel="hours" hidden>
+        <section class="admin-section">
+          <div class="admin-section-heading">
+            <h2>Horários de funcionamento</h2>
+          </div>
+          <form class="admin-form" id="hoursForm">
+            <div class="hours-editor" id="hoursEditor"></div>
+            <button class="button button-primary" type="submit">Salvar horários</button>
+          </form>
+        </section>
+      </section>
+
+      <section data-admin-tab-panel="contacts" hidden>
+        <section class="admin-section">
+          <div class="admin-section-heading">
+            <h2>Contatos e localização</h2>
+          </div>
+          <form class="admin-form" id="contactForm">
+            <div class="form-grid">
+              <label>
+                WhatsApp com DDI
+                <input id="contactWhatsapp" placeholder="557381676132">
+              </label>
+              <label>
+                Instagram
+                <input id="contactInstagram" placeholder="https://instagram.com/...">
+              </label>
+            </div>
+            <div class="form-grid">
+              <label>
+                URL pública
+                <input id="contactPublicBaseUrl" placeholder="https://yasfemmestudio.sirel.com.br">
+              </label>
+              <label>
+                Chave PIX
+                <input id="contactPixKey">
+              </label>
+            </div>
+            <label>
+              Endereço linha 1
+              <input id="locationLine1Input">
+            </label>
+            <label>
+              Endereço linha 2
+              <input id="locationLine2Input">
+            </label>
+            <label>
+              Referência
+              <input id="locationReferenceInput">
+            </label>
+            <label>
+              Link de rota no Maps
+              <input id="locationMapsUrl">
+            </label>
+            <label>
+              URL do mapa embed
+              <textarea id="locationMapEmbedUrl" rows="3"></textarea>
+            </label>
+            <button class="button button-primary" type="submit">Salvar contatos</button>
+          </form>
+        </section>
+      </section>
+
+      <section data-admin-tab-panel="payments" hidden>
+        <section class="admin-section">
+          <div class="admin-section-heading">
+            <h2>Pagamentos</h2>
+          </div>
+          <form class="admin-form" id="paymentForm">
+            <div class="admin-check-row">
+              <label><input id="paymentPix" type="checkbox"> Aceita PIX</label>
+              <label><input id="paymentCash" type="checkbox"> Aceita dinheiro</label>
+            </div>
+            <label>
+              Cartões de débito
+              <textarea id="paymentDebit" rows="5" placeholder="Um por linha"></textarea>
+            </label>
+            <label>
+              Cartões de crédito
+              <textarea id="paymentCredit" rows="6" placeholder="Um por linha"></textarea>
+            </label>
+            <label>
+              Vouchers e vales
+              <textarea id="paymentVouchers" rows="5" placeholder="Um por linha"></textarea>
+            </label>
+            <button class="button button-primary" type="submit">Salvar pagamentos</button>
+          </form>
+        </section>
+      </section>
+
+      <section data-admin-tab-panel="site" hidden>
+        <section class="admin-section">
+          <div class="admin-section-heading">
+            <h2>Textos do site</h2>
+          </div>
+          <form class="admin-form" id="siteForm">
+            <div class="form-grid">
+              <label>
+                Nome da marca
+                <input id="siteBrandName">
+              </label>
+              <label>
+                Limite da agenda em dias
+                <input id="siteBookingMaxDays" type="number" min="1" step="1">
+              </label>
+            </div>
+            <label>
+              Texto do rodapé
+              <input id="siteFooterText">
+            </label>
+            <label>
+              Eyebrow do hero
+              <input id="heroEyebrowInput">
+            </label>
+            <label>
+              Título do hero
+              <input id="heroTitleInput">
+            </label>
+            <label>
+              Texto do hero
+              <textarea id="heroCopyInput" rows="3"></textarea>
+            </label>
+            <button class="button button-primary" type="submit">Salvar textos</button>
+          </form>
+        </section>
+      </section>
+    </section>
+  </main>
+
+  <script src="admin.js"></script>
+</body>
+</html>

@@ -1,609 +1,228 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Yas Femme Studio Catálogo - Extensão de Cílios</title>
-    <meta name="description" content="Realçando sua beleza natural com técnicas profissionais de lash design. Agende seu horário!">
-    
-    <!-- Google Fonts Premium -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yas Femme Studio - Catálogo e Agenda</title>
+  <meta name="description" content="Catálogo de extensão de cílios, lash lifting e agenda do Yas Femme Studio em Teixeira de Freitas.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Header Premium -->
-    <header>
-        <div class="header-content">
-            <h1>Yas Femme Studio Catálogo</h1>
-            <p>Realçando sua beleza natural</p>
+  <header class="site-header" aria-label="Topo">
+    <a class="brand-mark" id="brandName" href="#inicio">Yas Femme Studio</a>
+    <nav class="site-nav" aria-label="Navegação principal">
+      <a href="#catalogo">Serviços</a>
+      <a href="#pagamento">Pagamento</a>
+      <a href="#localizacao">Localização</a>
+      <a href="/admin">Admin</a>
+    </nav>
+  </header>
+
+  <main id="inicio">
+    <section class="hero-section">
+      <div class="hero-shade"></div>
+      <div class="hero-content">
+        <p class="eyebrow" id="heroEyebrow">Studio de estética</p>
+        <h1 id="heroTitle">Yas Femme Studio</h1>
+        <p class="hero-copy" id="heroCopy">Design de cílios com agenda online, atendimento reservado e confirmação pelo WhatsApp.</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#catalogo">Ver serviços</a>
+          <a class="button button-ghost" id="heroWhatsapp" href="#" target="_blank" rel="noopener noreferrer">Chamar no WhatsApp</a>
         </div>
-        <div class="header-decoration">
-            <svg viewBox="0 0 24 24">
-                <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
-            </svg>
-        </div>
-    </header>
-
-    <!-- Indicadores de Urgência Premium -->
-    <div class="urgency-indicators">
-        <div class="urgency-container">
-            <div class="urgency-badge" id="nextAvailableSlot">
-                <span class="urgency-icon">⏰</span>
-                <div class="urgency-content">
-                    <span class="urgency-label">Próximo horário disponível</span>
-                    <span class="urgency-value" id="nextSlotText">Carregando...</span>
-                </div>
-            </div>
-            
-            <div class="urgency-badge" id="weeklyAvailability">
-                <span class="urgency-icon">📅</span>
-                <div class="urgency-content">
-                    <span class="urgency-label">Esta semana</span>
-                    <span class="urgency-value" id="weeklySlotsText">Carregando...</span>
-                </div>
-            </div>
-            
-            <div class="urgency-alert" id="urgencyAlert">
-                <span class="alert-icon">⚡</span>
-                <span class="alert-text">Agende agora e garanta seu horário!</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- Seção Catálogo -->
-    <section id="catalogo">
-        <div class="container">
-            <h2 class="section-title">Nossos Serviços</h2>
-            
-            <div class="services-grid">
-                <!-- Card 1: Lash Lifting -->
-                <div class="service-card">
-                    <img src="assets/lash-lifting.jpg" alt="Lash Lifting" class="service-image">
-                    <div class="service-content">
-                        <h3 class="service-name">Lash Lifting</h3>
-                        <p class="service-price">Aplicação R$ 95</p>
-                        <p class="service-info">Técnica sem manutenção</p>
-                        <button class="btn-schedule" onclick="openModal('Lash Lifting', 95, 'sem-manutencao')">
-                            Agendar Este Serviço
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Card 2: Fio a Fio -->
-                <div class="service-card">
-                    <img src="assets/fio-a-fio.jpg" alt="Fio a Fio" class="service-image">
-                    <div class="service-content">
-                        <h3 class="service-name">Fio a Fio</h3>
-                        <p class="service-price">Aplicação R$ 90</p>
-                        <p class="service-info">Técnica sem manutenção</p>
-                        <button class="btn-schedule" onclick="openModal('Fio a Fio', 90, 'sem-manutencao')">
-                            Agendar Este Serviço
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Card 3: Volume Brasileiro (DESTAQUE) -->
-                <div class="service-card featured">
-                    <img src="assets/volume-brasileiro.jpg" alt="Volume Brasileiro" class="service-image">
-                    <div class="service-content">
-                        <h3 class="service-name">Volume Brasileiro</h3>
-                        <p class="service-price">Aplicação R$ 100 | Manutenção R$ 90</p>
-                        <p class="service-info">Manutenção de 15 a 20 dias</p>
-                        <button class="btn-schedule" onclick="openModal('Volume Brasileiro', 100, '15-20-dias')">
-                            Agendar Este Serviço
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Card 4: Volume Egípcio -->
-                <div class="service-card">
-                    <img src="assets/volume-egipcio.jpg" alt="Volume Egípcio" class="service-image">
-                    <div class="service-content">
-                        <h3 class="service-name">Volume Egípcio</h3>
-                        <p class="service-price">Aplicação R$ 110 | Manutenção R$ 100</p>
-                        <p class="service-info">Manutenção de 15 a 20 dias</p>
-                        <button class="btn-schedule" onclick="openModal('Volume Egípcio', 110, '15-20-dias')">
-                            Agendar Este Serviço
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Card 5: Anime -->
-                <div class="service-card">
-                    <img src="assets/anime.jpg" alt="Anime" class="service-image">
-                    <div class="service-content">
-                        <h3 class="service-name">Anime</h3>
-                        <p class="service-price">Aplicação R$ 130</p>
-                        <p class="service-info">Técnica sem manutenção</p>
-                        <button class="btn-schedule" onclick="openModal('Anime', 130, 'sem-manutencao')">
-                            Agendar Este Serviço
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
+      </div>
     </section>
 
-    <!-- Modal de Agendamento -->
-    <div class="modal-overlay" id="bookingModal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal()">×</button>
-            
-            <h2 class="modal-title">Agendar Horário</h2>
-            <p class="modal-subtitle">Preencha os dados abaixo para confirmar seu agendamento</p>
-            
-            <!-- Alerta -->
-            <div class="alert-box">
-                <svg viewBox="0 0 24 24">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
-                </svg>
-                <p><strong>Importante:</strong> Nosso espaço é limitado e não podemos receber acompanhantes. Agradecemos a compreensão!</p>
-            </div>
-            
-            <!-- Formulário -->
-            <form id="bookingForm">
-                <div class="form-group">
-                    <label for="clientName">Nome Completo *</label>
-                    <input type="text" id="clientName" name="clientName" required placeholder="Digite seu nome completo">
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="clientPhone">Telefone (WhatsApp) *</label>
-                        <input type="tel" id="clientPhone" name="clientPhone" required placeholder="(00) 00000-0000">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="clientAddress">Endereço *</label>
-                        <input type="text" id="clientAddress" name="clientAddress" required placeholder="Rua, número, bairro">
-                    </div>
-                </div>
-                
-                <!-- Calendário -->
-                <div class="calendar-container">
-                    <div class="calendar-header">
-                        <button type="button" class="calendar-nav" onclick="changeMonth(-1)">‹</button>
-                        <h3 id="currentMonth">Carregando...</h3>
-                        <button type="button" class="calendar-nav" onclick="changeMonth(1)">›</button>
-                    </div>
-                    
-                    <div class="calendar-grid" id="calendarGrid">
-                        <!-- Gerado via JavaScript -->
-                    </div>
-                </div>
-                
-                <!-- Horários -->
-                <div class="time-slots" id="timeSlotsContainer" style="display: none;">
-                    <h4>Horários Disponíveis</h4>
-                    <div class="time-grid" id="timeGrid">
-                        <!-- Gerado via JavaScript -->
-                    </div>
-                    <!-- Mensagem quando não há horários -->
-                    <div class="no-slots-message" id="noSlotsMessage" style="display: none;">
-                        <div class="no-slots-icon">
-                            <svg viewBox="0 0 24 24">
-                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
-                            </svg>
-                        </div>
-                        <h4>Não há horários disponíveis</h4>
-                        <p>Para esta data, todos os horários já foram reservados.</p>
-    
-                        <button type="button" class="btn-waitlist" onclick="openWaitlistModal()">
-                            <svg viewBox="0 0 24 24" class="btn-icon-small">
-                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0-3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71 1.28-6 3.22.03-1.11.4-2.11 1.03-3 .41-.58.87-1.12 1.38-1.62.77-.76 1.68-1.38 2.69-1.8.73-.3 1.52-.46 2.34-.46s1.61.16 2.34.46c1.01.42 1.92 1.04 2.69 1.8.51.5.97 1.04 1.38 1.62.63.89 1 1.89 1.03 3-1.29-1.94-3.5-3.22-6-3.22z"/>
-                            </svg>
-                            <span>Entrar na Lista de Espera</span>
-                        </button>
-                        <p class="waitlist-hint">Você será avisada se abrir um horário!</p>
-                    </div>
-                    </div>
-                
-                <!-- Resumo -->
-                <div class="order-summary" id="orderSummary" style="display: none;">
-                    <h4>📋 Resumo do Agendamento</h4>
-                    <div class="summary-item">
-                        <span class="summary-label">Serviço:</span>
-                        <span class="summary-value" id="summaryService">-</span>
-                    </div>
-                    <div class="summary-item">
-                        <span class="summary-label">Valor:</span>
-                        <span class="summary-value" id="summaryPrice">-</span>
-                    </div>
-                    <div class="summary-item">
-                        <span class="summary-label">Data:</span>
-                        <span class="summary-value" id="summaryDate">-</span>
-                    </div>
-                    <div class="summary-item">
-                        <span class="summary-label">Horário:</span>
-                        <span class="summary-value" id="summaryTime">-</span>
-                    </div>
-                </div>
-                
-                <button type="submit" class="btn-confirm" id="confirmBtn" disabled>
-                    Confirmar Agendamento
-                </button>
-            </form>
-        </div>
-    </div>
+    <section class="availability-strip" aria-label="Disponibilidade da agenda">
+      <div class="availability-item">
+        <span class="label">Próximo horário</span>
+        <strong id="nextSlotText">Carregando...</strong>
+      </div>
+      <div class="availability-item">
+        <span class="label">Próximos 7 dias</span>
+        <strong id="weeklySlotsText">Carregando...</strong>
+      </div>
+      <div class="availability-note" id="urgencyAlert">Solicitações entram como pendentes até a confirmação da studio.</div>
+    </section>
 
-    <!-- Botão WhatsApp Flutuante -->
-    <a href="https://wa.me/557381676132?text=Olá!%20Gostaria%20de%20mais%20informações%20sobre%20os%20serviços." 
-       class="whatsapp-float" 
-       target="_blank" 
-       rel="noopener noreferrer"
-       aria-label="Conversar no WhatsApp">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-            <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
-        </svg>
-    </a>
+    <section id="catalogo" class="section section-catalog">
+      <div class="section-heading">
+        <p class="eyebrow">Catálogo</p>
+        <h2>Escolha o acabamento do seu olhar</h2>
+        <p>As reservas bloqueiam o horário como pendente e seguem para confirmação pelo WhatsApp.</p>
+      </div>
+      <div class="services-grid" id="servicesGrid" aria-live="polite"></div>
+    </section>
 
-<!-- Seção de Pagamento -->
-<section id="pagamento" class="payment-section">
-    <div class="container">
-        <h2 class="section-title">Formas de Pagamento</h2>
-        <p class="section-subtitle">Escolha a forma que preferir</p>
-        
-        <div class="payment-container">
-            <!-- PIX -->
-            <div class="payment-card">
-                <div class="payment-icon pix-icon">
-                    <div class="pix-official-icon">
-                        <div class="pix-qr-inner"></div>
-                    </div>
-                </div>
-                <h3>PIX</h3>
-                <p class="payment-desc">Pagamento instantâneo e seguro</p>
-                
-                <div class="pix-key-container">
-                    <p class="pix-label">Chave PIX (Telefone):</p>
-                    <div class="pix-key-box">
-                        <input type="text" 
-                               value="(73) 98167-6132" 
-                               id="pixKey" 
-                               readonly 
-                               class="pix-key-input">
-                        <button onclick="copyPixKey()" 
-                                class="btn-copy-pix" 
-                                id="btnCopyPix"
-                                title="Copiar chave PIX">
-                            <svg viewBox="0 0 24 24" class="copy-icon">
-                                <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
-                            </svg>
-                            <span id="copyText">Copiar</span>
-                        </button>
-                    </div>
-                    <p class="pix-hint">Clique para copiar e facilitar o pagamento</p>
-                </div>
-                
-                <div class="payment-benefits">
-                    <span class="benefit-item">✓ Confirmação imediata</span>
-                    <span class="benefit-item">✓ Sem taxas</span>
-                    <span class="benefit-item">✓ 24 horas</span>
-                </div>
-            </div>
+    <section id="feed" class="section feed-section" hidden>
+      <div class="section-heading">
+        <p class="eyebrow">Novidades</p>
+        <h2>Promoções e publicações</h2>
+      </div>
+      <div class="feed-grid" id="feedGrid"></div>
+    </section>
 
-            <!-- Dinheiro -->
-            <div class="payment-card">
-                <div class="payment-icon money-icon">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1.41 16.09V20h-2.67v-1.93c-1.71-.36-3.15-1.46-3.27-3.4h1.96c.1 1.05.82 1.87 2.65 1.87 1.96 0 2.4-.98 2.4-1.59 0-.83-.44-1.61-2.67-2.14-2.48-.6-4.18-1.62-4.18-3.67 0-1.72 1.39-2.84 3.11-3.21V4h2.67v1.95c1.86.45 2.79 1.86 2.85 3.39H14.3c-.05-1.11-.64-1.87-2.22-1.87-1.5 0-2.4.68-2.4 1.64 0 .84.65 1.39 2.67 1.91s4.18 1.39 4.18 3.91c-.01 1.83-1.38 2.83-3.12 3.16z"/>
-                    </svg>
-                </div>
-                <h3>Dinheiro</h3>
-                <p class="payment-desc">Pagamento em espécie no local</p>
-                
-                <div class="money-info">
-                    <p class="money-text">Aceitamos pagamento em dinheiro no momento do atendimento.</p>
-                    <div class="money-features">
-                        <span class="feature-badge">💵 Sem taxa</span>
-                        <span class="feature-badge">📝 Recibo</span>
-                    </div>
-                </div>
-                
-                <div class="payment-benefits">
-                    <span class="benefit-item">✓ Pagamento no local</span>
-                    <span class="benefit-item">✓ Sem complicações</span>
-                    <span class="benefit-item">✓ Recibo fornecido</span>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Mensagem Importante -->
-        <div class="payment-notice">
-            <svg viewBox="0 0 24 24">
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
-            </svg>
-            <p><strong>Importante:</strong> O pagamento deve ser realizado no momento do atendimento. Para PIX, recomendamos realizar antes ou durante a sessão.</p>
-        </div>
-    </div>
-</section>
-    
-<!-- Seção de Localização -->
-<section id="localizacao" class="location-section">
-    <div class="container">
-        <h2 class="section-title">Onde Estamos</h2>
-        <p class="section-subtitle">Visite nosso studio e descubra um mundo de beleza</p>
-        
-        <div class="location-container">
-            <!-- Informações de Endereço -->
-            <div class="location-info">
-                <div class="location-card">
-                    <div class="location-icon">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-                        </svg>
-                    </div>
-                    <div class="location-content">
-                        <h3>Endereço</h3>
-                        <p>Rua Clériston Andrade, 53D<br>Jardim Caraipe<br>Teixeira de Freitas - BA</p>
-                        <span class="location-reference">📍 Acima do Espaço Encantary</span>
-                    </div>
-                </div>
-                
-                <div class="location-card">
-                    <div class="location-icon">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
-                        </svg>
-                    </div>
-                    <div class="location-content">
-                        <h3>Horário de Atendimento</h3>
-                        <p>Segunda a Sexta: 19h às 21h<br>Sábado: 09h às 21h<br>Domingo: Fechado</p>
-                    </div>
-                </div>
-                
-                <a href="https://www.google.com/maps/dir/?api=1&destination=-17.5392,-39.7425&destination_place_id=ChIJXXXXXXXXXXXXXXXXXXXX" 
-                   target="_blank" 
-                   class="btn-directions">
-                    <svg viewBox="0 0 24 24" class="btn-icon">
-                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-                    </svg>
-                    <span>Como Chegar</span>
-                </a>
-            </div>
-            
-            <!-- Mapa do Google -->
-            <div class="location-map">
-                <iframe 
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d475.529838287375!2d-39.74114660314909!3d-17.543818185339077!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x735441ba315a763%3A0x4b4fe824419be0e3!2sR.%20Cl%C3%A9riston%20Andrade%2C%2053%20-%20Jardim%20Caraipe%2C%20Teixeira%20de%20Freitas%20-%20BA%2C%2045990-740!5e0!3m2!1spt-BR!2sbr!4v1775428020751!5m2!1spt-BR!2sbr" 
-                    width="600" 
-                    height="450" 
-                    style="border:0;" 
-                    allowfullscreen="" 
-                    loading="lazy" 
-                    referrerpolicy="no-referrer-when-downgrade">
-                    
-                    </iframe>
-            </div>
-        </div>
-    </div>
-</section>
-<!-- Calculadora de Manutenção -->
-<section id="manutencao" class="maintenance-section">
-    <div class="container">
-        <h2 class="section-title">Calculadora de Manutenção</h2>
-        <p class="section-subtitle">Saiba quando é o momento ideal para sua próxima sessão</p>
-        
-        <div class="maintenance-container">
-            <!-- Formulário da Calculadora -->
-            <div class="maintenance-calculator">
-                <div class="maintenance-card">
-                    <div class="maintenance-icon">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/>
-                        </svg>
-                    </div>
-                    
-                    <h3>Quando você fez sua aplicação?</h3>
-                    
-                    <form id="maintenanceForm">
-                        <div class="form-group">
-                            <label for="maintenanceService">Serviço Realizado *</label>
-                            <select id="maintenanceService" name="service" required>
-                                <option value="">Selecione o serviço...</option>
-                                <option value="lash-lifting" data-maintenance="none">Lash Lifting (Sem manutenção)</option>
-                                <option value="fio-a-fio" data-maintenance="none">Fio a Fio (Sem manutenção)</option>
-                                <option value="volume-brasileiro" data-maintenance="15-20">Volume Brasileiro (15-20 dias)</option>
-                                <option value="volume-egipcio" data-maintenance="15-20">Volume Egípcio (15-20 dias)</option>
-                                <option value="anime" data-maintenance="none">Anime (Sem manutenção)</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="maintenanceDate">Data da Aplicação *</label>
-                            <input type="date" id="maintenanceDate" name="date" required>
-                        </div>
-                        
-                        <button type="submit" class="btn-calculate">
-                            <svg viewBox="0 0 24 24" class="btn-icon-small">
-                                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
-                            </svg>
-                            <span>Calcular Período Ideal</span>
-                        </button>
-                    </form>
-                </div>
-            </div>
-            
-            <!-- Resultado da Calculadora -->
-            <div class="maintenance-result" id="maintenanceResult" style="display: none;">
-                <div class="result-card">
-                    <div class="result-header" id="resultHeader">
-                        <div class="status-indicator" id="statusIndicator"></div>
-                        <h3 id="resultTitle">Seu período ideal</h3>
-                    </div>
-                    
-                    <div class="result-content">
-                        <div class="result-item">
-                            <span class="result-label">📅 Data da aplicação:</span>
-                            <span class="result-value" id="resultApplicationDate">-</span>
-                        </div>
-                        
-                        <div class="result-item">
-                            <span class="result-label">⏰ Período de manutenção:</span>
-                            <span class="result-value" id="resultMaintenancePeriod">-</span>
-                        </div>
-                        
-                        <div class="result-item highlight">
-                            <span class="result-label">🎯 Volta ideal entre:</span>
-                            <span class="result-value" id="resultIdealWindow">-</span>
-                        </div>
-                        
-                        <div class="result-item">
-                            <span class="result-label">📍 Status atual:</span>
-                            <span class="result-value status-text" id="resultStatus">-</span>
-                        </div>
-                        
-                        <div class="result-item">
-                            <span class="result-label">⚠️ Dias restantes:</span>
-                            <span class="result-value" id="resultDaysLeft">-</span>
-                        </div>
-                    </div>
-                    
-                    <div class="result-actions">
-                        <a href="#" class="btn-whatsapp-reminder" id="btnWhatsappReminder" target="_blank">
-                            <svg viewBox="0 0 24 24" class="btn-icon-small">
-                                <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01C17.18 3.03 14.69 2 12.04 2z"/>
-                            </svg>
-                            <span>Agendar Manutenção</span>
-                        </a>
-                        
-                        <button class="btn-save-reminder" onclick="saveReminder()">
-                            <svg viewBox="0 0 24 24" class="btn-icon-small">
-                                <path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/>
-                            </svg>
-                            <span>Salvar Lembrete</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Informações Educativas -->
-            <div class="maintenance-info">
-                <div class="info-card">
-                    <div class="info-icon">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
-                        </svg>
-                    </div>
-                    <h4>Por que fazer manutenção?</h4>
-                    <p>A manutenção regular mantém seus cílios sempre cheios e bonitos, além de prevenir falhas e garantir a saúde dos seus cílios naturais.</p>
-                </div>
-                
-                <div class="info-card">
-                    <div class="info-icon">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
-                        </svg>
-                    </div>
-                    <h4>Quando agendar?</h4>
-                    <p>Para técnicas com manutenção, agende entre 15-20 dias após a aplicação. Para técnicas sem manutenção, aproveite até os cílios caírem naturalmente.</p>
-                </div>
-                
-                <div class="info-card">
-                    <div class="info-icon">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/>
-                        </svg>
-                    </div>
-                    <h4>Cuidados entre sessões</h4>
-                    <p>Evite óleo nos cílios, não esfregue os olhos, durma de lado ou de barriga para cima, e escove os cílios diariamente.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-    
-    <!-- Footer Premium -->
-    <footer>
-        <div class="footer-content">
-            <div class="footer-info">
-                <p>
-                    <svg viewBox="0 0 24 24"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56-.35-.12-.74-.03-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/></svg>
-                    <a href="https://wa.me/557381676132" target="_blank">WhatsApp: (73) 8167-6132</a>
-                </p>
-                <p>
-                    <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
-                    Seg-Sex: 19h - 21h | Sáb: 09h - 21h
-                </p>
-            </div>
-            
-            <div class="social-links">
-                <a href="https://www.instagram.com/y._femme_studio?igsh=aDF0MTdzY3ZoY2Ro" 
-                   class="social-link" 
-                   aria-label="Instagram"
-                   target="_blank"
-                   rel="noopener noreferrer">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4H7.6m9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8 1.25 1.25 0 0 1 16 6.75a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3z"/>
-                    </svg>
-                </a>
-                <a href="#" class="social-link" aria-label="Facebook">
-                    <svg viewBox="0 0 24 24"><path d="M12 2.04C6.5 2.04 2 6.53 2 12.06C2 17.06 5.66 21.21 10.44 21.96V14.96H7.9V12.06H10.44V9.85C10.44 7.34 11.93 5.96 14.15 5.96C15.21 5.96 16.12 6.04 16.36 6.07V8.83H14.83C13.63 8.83 13.4 9.4 13.4 10.2V12.06H16.2L15.81 14.96H13.4V21.96C18.18 21.21 21.84 17.06 21.84 12.06C21.84 6.53 17.34 2.04 12 2.04Z"/></svg>
-                </a>
-            </div>
-            
-            <div class="footer-bottom">
-                <p>&copy; 2026 Yas Femme Studio Catálogo. Todos os direitos reservados.</p>
-            </div>
-        </div>
-    </footer>
+    <section id="pagamento" class="section payment-section">
+      <div class="section-heading">
+        <p class="eyebrow">Pagamento</p>
+        <h2>Formas de pagamento</h2>
+      </div>
+      <div class="payment-grid" id="paymentGrid"></div>
+    </section>
 
-    <script src="script.js"></script>
-    <!-- Modal Lista de Espera -->
-<div class="modal-overlay" id="waitlistModal">
-    <div class="modal-content">
-        <button class="modal-close" onclick="closeWaitlistModal()">×</button>
-        
-        <h2 class="modal-title">🔔 Lista de Espera</h2>
-        <p class="modal-subtitle">Preencha abaixo para ser avisada se abrir um horário</p>
-        
-        <form id="waitlistForm">
-            <input type="hidden" id="waitlistService" name="service">
-            <input type="hidden" id="waitlistPrice" name="price">
-            <input type="hidden" id="waitlistPreferredDate" name="preferredDate">
-            
-            <div class="form-group">
-                <label for="waitlistName">Nome Completo *</label>
-                <input type="text" id="waitlistName" name="name" required placeholder="Digite seu nome">
+    <section id="localizacao" class="section location-section">
+      <div class="section-heading">
+        <p class="eyebrow">Localização</p>
+        <h2>Atendimento reservado no studio</h2>
+      </div>
+      <div class="location-grid">
+        <div class="location-copy">
+          <h3 id="locationLine1">Rua Clériston Andrade, 53D</h3>
+          <p id="locationLine2">Jardim Caraipe, Teixeira de Freitas - BA</p>
+          <p class="muted" id="locationReference">Acima do Espaço Encantary.</p>
+          <div class="hours-list" id="hoursList">
+            <span>Carregando horários...</span>
+          </div>
+          <a class="button button-dark" id="mapsLink" href="https://www.google.com/maps/dir/?api=1&destination=R.%20Cl%C3%A9riston%20Andrade%2C%2053%20-%20Jardim%20Caraipe%2C%20Teixeira%20de%20Freitas%20-%20BA" target="_blank" rel="noopener noreferrer">Como chegar</a>
+        </div>
+        <div class="map-shell">
+          <iframe
+            id="mapFrame"
+            title="Mapa do Yas Femme Studio"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d475.529838287375!2d-39.74114660314909!3d-17.543818185339077!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x735441ba315a763%3A0x4b4fe824419be0e3!2sR.%20Cl%C3%A9riston%20Andrade%2C%2053%20-%20Jardim%20Caraipe%2C%20Teixeira%20de%20Freitas%20-%20BA%2C%2045990-740!5e0!3m2!1spt-BR!2sbr!4v1775428020751!5m2!1spt-BR!2sbr"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            allowfullscreen>
+          </iframe>
+        </div>
+      </div>
+    </section>
+
+    <section id="manutencao" class="section maintenance-section">
+      <div class="section-heading">
+        <p class="eyebrow">Manutenção</p>
+        <h2>Calcule o melhor período de retorno</h2>
+      </div>
+      <form class="maintenance-form" id="maintenanceForm">
+        <label>
+          Serviço realizado
+          <select id="maintenanceService" required></select>
+        </label>
+        <label>
+          Data da aplicação
+          <input type="date" id="maintenanceDate" required>
+        </label>
+        <button class="button button-primary" type="submit">Calcular período</button>
+      </form>
+      <div class="maintenance-result" id="maintenanceResult" hidden></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p id="footerText">Todos os direitos reservados - Yas Femme Studio - Catálogo e agenda.</p>
+    <a id="instagramLink" href="https://www.instagram.com/y._femme_studio?igsh=aDF0MTdzY3ZoY2Ro" target="_blank" rel="noopener noreferrer">Instagram</a>
+  </footer>
+
+  <a class="whatsapp-float" id="floatingWhatsapp" href="#" target="_blank" rel="noopener noreferrer" aria-label="Conversar pelo WhatsApp">
+    <svg viewBox="0 0 448 512" aria-hidden="true">
+      <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"></path>
+    </svg>
+  </a>
+
+  <div class="modal-overlay" id="bookingModal" hidden>
+    <section class="modal-content" role="dialog" aria-modal="true" aria-labelledby="bookingTitle">
+      <button class="modal-close" type="button" data-close-modal aria-label="Fechar">×</button>
+      <div id="bookingFormShell">
+        <p class="eyebrow" id="bookingServiceLabel">Agendamento</p>
+        <h2 id="bookingTitle">Solicitar horário</h2>
+        <p class="modal-subtitle">Seu horário ficará pendente até a confirmação da studio.</p>
+
+        <form id="bookingForm">
+          <div class="form-grid">
+            <label>
+              Nome completo
+              <input id="clientName" name="clientName" autocomplete="name" required>
+            </label>
+            <label>
+              WhatsApp
+              <input id="clientPhone" name="clientPhone" inputmode="tel" autocomplete="tel" placeholder="(00) 00000-0000" required>
+            </label>
+          </div>
+          <label>
+            Endereço
+            <input id="clientAddress" name="clientAddress" autocomplete="street-address" placeholder="Rua, número, bairro" required>
+          </label>
+          <label>
+            Observações
+            <textarea id="bookingNotes" rows="2" placeholder="Preferências, alergias ou recado para a confirmação"></textarea>
+          </label>
+
+          <div class="calendar-card">
+            <div class="calendar-header">
+              <button class="icon-button" id="prevMonthButton" type="button" aria-label="Mês anterior">‹</button>
+              <strong id="currentMonth">Carregando...</strong>
+              <button class="icon-button" id="nextMonthButton" type="button" aria-label="Próximo mês">›</button>
             </div>
-            
-            <div class="form-group">
-                <label for="waitlistPhone">WhatsApp *</label>
-                <input type="tel" id="waitlistPhone" name="phone" required placeholder="(00) 00000-0000">
-            </div>
-            
-            <div class="form-group">
-                <label for="waitlistPeriod">Período de Interesse *</label>
-                <select id="waitlistPeriod" name="period" required>
-                    <option value="">Selecione...</option>
-                    <option value="esta-semana">Esta semana</option>
-                    <option value="proxima-semana">Próxima semana</option>
-                    <option value="quinzena">Próximos 15 dias</option>
-                    <option value="mes">Próximo mês</option>
-                    <option value="flexivel">Qualquer data (me avise primeiro!)</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label for="waitlistNotes">Observações (opcional)</label>
-                <textarea id="waitlistNotes" name="notes" rows="3" placeholder="Ex: Prefiro sábados à tarde..."></textarea>
-            </div>
-            
-            <div class="waitlist-summary">
-                <h4>📋 Resumo</h4>
-                <p><strong>Serviço:</strong> <span id="wlService">-</span></p>
-                <p><strong>Valor:</strong> <span id="wlPrice">-</span></p>
-                <p><strong>Data preferida:</strong> <span id="wlDate">-</span></p>
-            </div>
-            
-            <button type="submit" class="btn-confirm btn-waitlist-confirm">
-                ✅ Quero ser avisada!
-            </button>
+            <div class="calendar-grid" id="calendarGrid"></div>
+          </div>
+
+          <div class="slot-panel" id="slotPanel" hidden>
+            <h3>Horários disponíveis</h3>
+            <div class="time-grid" id="timeGrid"></div>
+            <button class="button button-dark" id="waitlistFromBooking" type="button" hidden>Entrar na lista de espera</button>
+          </div>
+
+          <div class="booking-summary" id="bookingSummary" hidden></div>
+          <p class="form-error" id="bookingError" role="alert"></p>
+          <button class="button button-primary button-full" id="confirmBookingButton" type="submit" disabled>Solicitar horário</button>
         </form>
-    </div>
-</div>
+      </div>
+      <div class="success-panel" id="bookingSuccess" hidden></div>
+    </section>
+  </div>
+
+  <div class="modal-overlay" id="waitlistModal" hidden>
+    <section class="modal-content modal-compact" role="dialog" aria-modal="true" aria-labelledby="waitlistTitle">
+      <button class="modal-close" type="button" data-close-waitlist aria-label="Fechar">×</button>
+      <div id="waitlistFormShell">
+        <p class="eyebrow">Lista de espera</p>
+        <h2 id="waitlistTitle">Receber aviso de vaga</h2>
+        <p class="modal-subtitle">A studio entra em contato se abrir um horário compatível.</p>
+        <form id="waitlistForm">
+          <label>
+            Nome completo
+            <input id="waitlistName" required>
+          </label>
+          <label>
+            WhatsApp
+            <input id="waitlistPhone" inputmode="tel" placeholder="(00) 00000-0000" required>
+          </label>
+          <label>
+            Período de interesse
+            <select id="waitlistPeriod" required>
+              <option value="">Selecione...</option>
+              <option value="esta-semana">Esta semana</option>
+              <option value="proxima-semana">Próxima semana</option>
+              <option value="quinzena">Próximos 15 dias</option>
+              <option value="mes">Próximo mês</option>
+              <option value="flexivel">Qualquer data</option>
+            </select>
+          </label>
+          <label>
+            Observações
+            <textarea id="waitlistNotes" rows="3"></textarea>
+          </label>
+          <p class="form-error" id="waitlistError" role="alert"></p>
+          <button class="button button-primary button-full" type="submit">Entrar na lista</button>
+        </form>
+      </div>
+      <div class="success-panel" id="waitlistSuccess" hidden></div>
+    </section>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>

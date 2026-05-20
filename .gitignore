@@ -1,0 +1,12 @@
+node_modules/
+.env
+storage/*.sqlite
+storage/*.sqlite-*
+storage/logs/*.log
+storage/runtime/*.pid
+storage/runtime/*.json
+storage/uploads/*
+!storage/uploads/.gitkeep
+npm-debug.log*
+.playwright-mcp/
+yas-femme-*.png
